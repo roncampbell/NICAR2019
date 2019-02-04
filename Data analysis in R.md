@@ -14,3 +14,8 @@ library(janitor)
 
 library(descr)
 
+And now for a curveball: The tidyverse is a package of packages -- the "core tidyverse" of widely used packages, including ggplot (charts), dplyr and tidyr (data manipulation), readr (simple data import), stringr (string manipulation) -- plus a dozen or so other packages. Journalists love some of those non-core tidyverse packages, particular readxl (importing Excel) and lubridate (manipulating dates). We're going to need readxl, so let's get it now.
+
+library(readxl)
+
+As you may have heard, California has two seasons, fire and flood. Let us now ponder fire.
