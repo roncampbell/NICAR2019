@@ -1,1 +1,1 @@
-# NICAR2019
+This is the repository for an R class at the NICAR Conference in Newport Beach, CA, March 7-10, 2019. Meghan Hoyer of the Associated Press and I will be teaching a 3-part introduction to R. You'll find step-by-step tip sheets as well as data and a reading list.
