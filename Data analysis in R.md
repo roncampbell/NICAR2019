@@ -30,7 +30,7 @@ Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	11977 obs. of  14 variables:
  $ STATE     : chr  "California" "California" "California" "California" ...
  $ AGENCY    : chr  "Contract County" "Contract County" "Contract County" "Contract County" ...
 
-Whoa! There are nearly 12,000 fires here ("11795 obs"). Let's make a chart and see how many of them are big. We'll do that using ggplot, the ingenious charting tool built into the tidyverse. We'll dive right in, and then I'll explain how it works:
+Whoa! There are nearly 12,000 fires here ("11977 obs"). Let's make a chart and see how many of those fires are big. We'll do that using ggplot, the ingenious charting tool built into the tidyverse. We'll dive right in, and then I'll explain how it works:
 
 > ggplot(Wildfires, aes(x=YEAR, y=GIS_ACRES)) + geom_point()
 
@@ -47,11 +47,13 @@ labs(title="California wildfire history",
  caption="Source: CalFire") +
  xlab("Year") + ylab("Acreage")</code>
 
+Notice that when we add a new line (unless it's a continuation of something inside parentheses), we end the preceding line with a "+" sign; this is important because ggplot is fussy about grammar. 
+
 We've added a title and caption while changing the labels for the x and y axes. But we could really dress up the inside of the chart too. Those black dots look rather dreary, and so does the standard gray background. If you like color, R has got you covered.
 
 > colors()
 
-Yes, there are 657 colors. So let's make two other changes to our wildfire plot:
+Yes, R features 657 colors. So let's make two other changes to our wildfire plot:
 
 > <code>ggplot(Wildfires, aes(x=YEAR, y=GIS_ACRES)) + 
 geom_point(col="firebrick1") +
@@ -127,7 +129,12 @@ xlab("Cause") + ylab("Acreage")</code>
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/Wildfire_causes.png?raw=true)
 
+Who fights the fires? The answer is in the column AGENCY. Again, we can get a breakdown of firefighting by cause and agency with a simple crosstab. Or we can find out with a picture. Since we already know the x-axis with causes is hard to read, let's borrow the code we used last time. This time, however, we'll do something different. We'll "fill" the bars with the AGENCY variable to create a stacked bar graph. That will show which agencies did the most work fighting which types of fires.
 
+> <code>ggplot(RecentFires, aes(x=CAUSE, y=GIS_ACRES, fill=AGENCY)) + 
+geom_bar(stat="identity") +
+theme(axis.text.x = element_text(angle=90,hjust=1,vjust=0.5))</code>
 
+![]()
 
 
