@@ -61,3 +61,42 @@ Yes, there are 657 colors. So let's make two other changes to our wildfire plot:
 +     theme_minimal()
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/Fire_scatter.png?raw=true)
+
+The graph makes clear that there are thousands of relatively small fires and a handful of gigantic ones. Let's drill down and take a closer look using some tools to summarise the data. There are several ways to do that, and we're going to try two of them -- Base R's summary() and the mosaic package's aptly named favstats().
+
+> summary(Wildfires$GIS_ACRES)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+   100.0    236.5    512.9   2817.6   1465.7 501082.0 
+> favstats(Wildfires$GIS_ACRES)
+      min       Q1   median       Q3    max     mean       sd     n
+ 100.0275 236.4592 512.9036 1465.738 501082 2817.561 11611.32 11977
+ missing
+       0
+       
+The summary() function is good most of the time; if you want more precise values and really need the standard deviation and missing values, favstats() is useful. Both show that the typical wildfire is small, with a median size of around 512 acres and a mean (mathematical average) of 2,817 acres. But notice that very high standard deviation -- 11,611 acres. That's the tell, the sign that the mean is, uh, meaningless.
+
+Let's narrow our focus to the most recent fires in the data, those that occurred from 2000 through 2017. First we'll filter the Wildfires dataframe and create a new dataframe with just the recent data. Then we'll analyze the new dataframe.
+
+> RecentFires <- Wildfires %>% 
++     filter(YEAR >= 2000)
+
+We'll use another tool to summarize the data by acreage, quantiles. Pay close attention to this command -- it's tricky.
+
+> quantile(RecentFires$GIS_ACRES, c(0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99), na.rm=T)
+        5%        10%        25%        50%        75%        90%        95%        99% 
+  114.4208   133.8902   206.0898   501.5787  1949.1175  9343.3310 22146.7040 80108.3956
+  
+The worst 1% of wildfires burned at least 80,000 acres. We know that some fires in the past 20 years burned five times that much.
+  
+Now let's look at the causes of some of these fires using the handy tabyl function in the janitor package. (Janitor is also useful for cleaning up data - thus its name.)
+
+> tabyl(RecentFires, CAUSE)
+                         CAUSE   n      percent
+                        <Null>   8 0.0035288928
+                 1 - Lightning 705 0.3109836789
+                  10 - Vehicle 127 0.0560211734
+                11 - Powerline  91 0.0401411557
+ 
+
+
+
