@@ -20,7 +20,7 @@ library(readxl)
 
 As you may have heard, California has two seasons, fire and flood. Let us now ponder fire. CalFire, the state's wildlands fire department, keeps track of wildfires going back decades on an Excel spreadsheet. We'll import, analyze and visualize California's fiery past.
 
-> Wildfires <- read_excel("California Wildfires_100.xlsx")
+> Wildfires <- read_excel("CA_wildfires.xlsx")
 
 Now we'll get a quick idea of the Wildfires dataframe's structure with the str() function.
 
