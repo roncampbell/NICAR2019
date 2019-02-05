@@ -92,7 +92,7 @@ Let's graph the fires to get a better idea of their relative size. We'll use a g
 
 > ggplot(RecentFires, aes(GIS_ACRES)) + geom_histogram(bins=50)
   
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/Wildfire_histogram.png?raw=true)
 
 Now let's look at the causes of some of these fires using the handy tabyl function in the janitor package. (Janitor is also useful for cleaning up data - thus its name.)
 
