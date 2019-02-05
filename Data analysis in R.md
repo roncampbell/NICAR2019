@@ -18,4 +18,8 @@ And now for a curveball: The tidyverse is a package of packages -- the "core tid
 
 library(readxl)
 
-As you may have heard, California has two seasons, fire and flood. Let us now ponder fire.
+As you may have heard, California has two seasons, fire and flood. Let us now ponder fire. CalFire, the state's wildlands fire department, keeps track of wildfires going back decades on an Excel spreadsheet. We'll import, analyze and visualize California's fiery past.
+
+> Wildfires <- read_excel("California Wildfires_100.xlsx")
+
+
