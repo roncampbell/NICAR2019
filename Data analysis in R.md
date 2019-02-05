@@ -137,11 +137,15 @@ theme(axis.text.x = element_text(angle=90,hjust=1,vjust=0.5))</code>
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/Wildfire_fighters.png?raw=true)
 
-Now let's come to Orange County and dig into one of my favorite things, Census data. We'll use a great part of the tidyverse, readr, to open a comma-separated variable (csv) file on your computers.
+Now let's come to Orange County and dig into one of my favorite things, Census data. We'll use a great part of the tidyverse, readr, to open a comma-separated variable (csv) file on your computers. Since the Census Bureau habitually provides two rows of column headers, we'll tell R to skip the first line.
 
-> OC_Residents <- read_csv("ACS_17_5YR_B05001 - tracts.csv")
+> OC_Residents <- read_csv("ACS_17_5YR_B05001 - tracts.csv", skip = 1)
 
-Now type View(OC_Residents) and you'll see we have a problem - actually a couple of problems. First, the column headers appear in the first row; the actual headers are meaningless. Second and more important, most of the values appear to be strings rather than integers. We'll fix all of those right now. First step is to find out the dimensions of the file:
+Now type View(OC_Residents) and you'll see we have a problem - actually a couple of problems. First, the column headers very strange - huge actually. Second and more important, most of the values appear to be strings rather than integers. We'll fix all of those right now. Sometimes we can fix column names with the janitor package and its self-described clean_names function.
+
+> OC_Residents <- janitor::clean_names(OC_Residents)
+
+But in this particular case janitor leaves us with awkwardly long names. So let's clean them ourselves. First step is to learn how many columns there are.
 
 > dim(OC_Residents)
 
@@ -163,11 +167,7 @@ Bye-bye.
 
 There are still a couple of things left to do. First that top row is useless. Let's get rid of it.
 
-> OC_Residents <- OC_Residents[-1,]
-
-This command tells R to remove the first row but to do nothing about any of the columns. Whenever you see brackets in R with a comma, everything to the left of the comma applies to rows, everything to the right applies to columns.
-
-Now let's fix the columns, which are formatted as strings. We need to make them numbers. I'll show you how to do it for TotalPop, and then you do it for the Native, Naturalized and Noncitizen columns.
+Now let's change the column types from string to numbers. I'll show you how to do it for TotalPop, and then you do it for the Native, Naturalized and Noncitizen columns.
 
 > OC_Residents$TotalPop <- as.numeric(OC_Residents$TotalPop)
 
@@ -193,4 +193,34 @@ geom_smooth()
 ![](https://github.com/roncampbell/NICAR2019/blob/images/OC_Pop_immigrants.png?raw=true)
 
 The blue line with the gray error shading shows the apparent relationship between Orange County's total and immigrant population by tract. In most tracts close to a quarter of all residents were born abroad, but the error grows wider as population grows.
+
+Now let's look at income in OC census tracts. We'll import income data much the same way we brought in the citizenship data.
+
+> OC_Income <- read_csv("ACS_17_5YR_B19013 - tracts.csv", skip= 1)
+
+There are fewer columns this time, but the headers look even more obnoxious. Let's not bother with janitor::clean_names(). We'll change them ourselves. The name of Column 2 becomes "ID", Column 3 becomes "Geography", Column 4 becomes "MedianHHInc", Column 5 becomes "MOE". When you've renamed those columns, eliminate Column 1 because its name is too similar to Column 2.
+
+If you've forgotten, here's the way to rename columns:
+
+> colnames(OC_Income)[2] <- "ID"
+
+And I'm sure you all want to know just how much money is floating around Orange County. But first we have to change the MedianHHIncome column, currently formatted as a character, to numeric.
+
+> OC_Income$MedianHHIncome <- as.numeric(OC_Income$MedianHHIncome)
+
+> favstats(OC_Income$MedianHHIncome)
+
+   min    Q1 median       Q3    max     mean       sd   n missing
+   
+ 24211  61443   83214  106449.5  209095  86921.18  32116.53  579       4
+
+Now let's do it up right in a graphic.
+
+> <code>ggplot(OC_Income, aes(MedianHHIncome)) + 
+geom_histogram(col='black', fill='green') +
+labs(title="Median household income in Orange County census tracts") +
+xlab("Median household income") + ylab("Count") +
+theme_minimal()</code>
+
+![]()
 
