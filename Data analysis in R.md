@@ -120,7 +120,7 @@ ggplot(FireCauses, aes(x=CAUSE, y=GIS_ACRES)) +
 +          caption="Source: CalFire") +
 +     xlab("Cause") + ylab("Acreage")
 
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/Wildfire_causes.png?raw=true)
 
 
 
