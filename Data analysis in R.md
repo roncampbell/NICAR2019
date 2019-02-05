@@ -137,4 +137,11 @@ theme(axis.text.x = element_text(angle=90,hjust=1,vjust=0.5))</code>
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/Wildfire_fighters.png?raw=true)
 
+Now let's come to Orange County and dig into one of my favorite things, Census data. We'll use a great part of the tidyverse, readr, to open a comma-separated variable (csv) file on your computers.
 
+> OC_Residents <- read_csv("ACS_17_5YR_B05001 - tracts.csv")
+
+Now type View(OC_Residents) and you'll see we have a problem - actually a couple of problems. First, the column headers appear in the first row; the actual headers are meaningless. Second and more important, most of the values appear to be strings rather than integers. We'll fix all of those right now. First step is to find out the dimensions of the file:
+
+> dim(OC_Residents)
+[1] 584  15
