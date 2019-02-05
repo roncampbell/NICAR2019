@@ -42,10 +42,10 @@ Now you might notice something odd about the Y axis; the numbers are in scientif
 
 After you've run the options command, re-run the ggplot command, and you'll get a chart with real numbers in the Y-axis. But we can still do lots more. The great thing about ggplot is that it works in layers. We can add items to it.
 
-> ggplot(Wildfires, aes(x=YEAR, y=GIS_ACRES)) + geom_point() +
-+     labs(title="California wildfire history",
-+                caption="Source: CalFire") +
-+     xlab("Year") + ylab("Acreage")
+<code>ggplot(Wildfires, aes(x=YEAR, y=GIS_ACRES)) + geom_point() +
+labs(title="California wildfire history",
+ caption="Source: CalFire") +
+ xlab("Year") + ylab("Acreage")</code>
 
 We've added a title and caption while changing the labels for the x and y axes. But we could really dress up the inside of the chart too. Those black dots look rather dreary, and so does the standard gray background. If you like color, R has got you covered.
 
