@@ -135,6 +135,6 @@ Who fights the fires? The answer is in the column AGENCY. Again, we can get a br
 geom_bar(stat="identity") +
 theme(axis.text.x = element_text(angle=90,hjust=1,vjust=0.5))</code>
 
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/Wildfire_fighters.png?raw=true)
 
 
