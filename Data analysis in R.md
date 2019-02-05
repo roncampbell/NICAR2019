@@ -42,7 +42,7 @@ Now you might notice something odd about the Y axis; the numbers are in scientif
 
 After you've run the options command, re-run the ggplot command, and you'll get a chart with real numbers in the Y-axis. But we can still do lots more. The great thing about ggplot is that it works in layers. We can add items to it.
 
-<code>ggplot(Wildfires, aes(x=YEAR, y=GIS_ACRES)) + geom_point() +
+> <code>ggplot(Wildfires, aes(x=YEAR, y=GIS_ACRES)) + geom_point() +
 labs(title="California wildfire history",
  caption="Source: CalFire") +
  xlab("Year") + ylab("Acreage")</code>
@@ -53,12 +53,12 @@ We've added a title and caption while changing the labels for the x and y axes. 
 
 Yes, there are 657 colors. So let's make two other changes to our wildfire plot:
 
-> ggplot(Wildfires, aes(x=YEAR, y=GIS_ACRES)) + 
-+     geom_point(col="firebrick1") +
-+     labs(title="California wildfire history",
-+                caption="Source: CalFire") +
-+     xlab("Year") + ylab("Acreage") +
-+     theme_minimal()
+> <code>ggplot(Wildfires, aes(x=YEAR, y=GIS_ACRES)) + 
+geom_point(col="firebrick1") +
+labs(title="California wildfire history",
+caption="Source: CalFire") +
+xlab("Year") + ylab("Acreage") +
+theme_minimal()</code>
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/Fire_scatter.png?raw=true)
 
