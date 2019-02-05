@@ -155,4 +155,42 @@ Here are the first few name changes:
 colnames(OC_Residents)[3] <- "Geography"
 colnames(OC_Residents)[4] <- "TotalPop"</code>                                     
 
+I'll make similar changes to the columns for "Native", "US_PR" (Puerto Rico), "US_BornAbroad", "Naturalized" and "Noncitizen". These are columns 6, 8, 10, 12 and 14; make sure you have the right column indexes when you rename these columns. Then it's time to eliminate columns. I usually start from the right side and move to left. It's always a good idea to check the column name first, for example  by typing "colnames(OC_Residents)[15]" in the console and hiting enter; this will tell you for sure if you're about to zap the column you really intend to terminate with extreme prejudice. Remember, once you do the NULL trick, a column is gone.
+
+> OC_Residents[15] <- NULL
+
+Bye-bye.
+
+There are still a couple of things left to do. First that top row is useless. Let's get rid of it.
+
+> OC_Residents <- OC_Residents[-1,]
+
+This command tells R to remove the first row but to do nothing about any of the columns. Whenever you see brackets in R with a comma, everything to the left of the comma applies to rows, everything to the right applies to columns.
+
+Now let's fix the columns, which are formatted as strings. We need to make them numbers. I'll show you how to do it for TotalPop, and then you do it for the Native, Naturalized and Noncitizen columns.
+
+> OC_Residents$TotalPop <- as.numeric(OC_Residents$TotalPop)
+
+Orange County has a surfer-dude, white-girl reputation. In fact, it's majority minority and has a very large immigrant population. To identify OC's immigrant neighborhoods, we'll create new columns in the dataframe using a function called mutate().
+
+> <code>OC_Residents <- OC_Residents %>% 
+group_by(ID) %>% 
+mutate(Immigrants = sum(Naturalized + Noncitizen),
+ ImmigrantPer = (Immigrants / TotalPop) * 100)</code>
+
+> favstats(OC_Residents$ImmigrantPer)
+
+ min       Q1   median      Q3     max     mean       sd   n missing
+ 
+   0  16.76027  26.59105  38.8278  63.0132  28.37704  13.31743  582       1
+ 
+ Oooh, let's graph this. And this time, let's plot a curve.
+ 
+ > <code>ggplot(OC_Residents, aes(x=TotalPop, y=Immigrants)) + geom_point() +
+geom_smooth()
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'</code>
+
+![]()
+
+The blue line with the gray error shading shows the apparent relationship between Orange County's total and immigrant population by tract. In most tracts close to a quarter of all residents were born abroad, but the error grows wider as population grows.
 
