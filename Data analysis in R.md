@@ -222,5 +222,5 @@ labs(title="Median household income in Orange County census tracts") +
 xlab("Median household income") + ylab("Count") +
 theme_minimal()</code>
 
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/OC_income.png?raw=true)
 
