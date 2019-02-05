@@ -60,4 +60,4 @@ Yes, there are 657 colors. So let's make two other changes to our wildfire plot:
 +     xlab("Year") + ylab("Acreage") +
 +     theme_minimal()
 
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/Fire_scatter.png?raw=true)
