@@ -113,17 +113,17 @@ But what causes the most fires? We can find out by crosstabbing the CAUSE and GI
  
 There are 19 listed causes, including the all-purpose "Null", meaning "nobody knows". Let's do a bar chart to put everything in perspective. Since bar charts can few different forms -- single, stacked or side-by-side -- we have to specify what we want. For a bar chart with one categorical variable and one continuous variable, use stat="identity". With two categorical variables, you have a choice -- either stack the bars or place them side by side; for the former, use different fills to indicate the variables; for the latter, use position="dodge".
 
-> ggplot(FireCauses, aes(x=CAUSE, y=GIS_ACRES)) + 
-+     geom_bar(stat="identity")
+> <code>ggplot(FireCauses, aes(x=CAUSE, y=GIS_ACRES)) + 
+geom_bar(stat="identity")</code>
 
 This gives a simple bar chart, and an ugly one with a run-on x-axis. We can do a lot better. The obvious cure is to tilt the x-axis on its side. There's some code online to help us do that. While we're at it, let's add some color to the bars, write a headline and change the axis labels. Again, we're going to write this chart in layers, adding pieces a bit at a time. One other note: In ggplot, "col" or color applies to lines like the outline of a bar; "fill" applies to the interior of an object.
 
-ggplot(FireCauses, aes(x=CAUSE, y=GIS_ACRES)) + 
-+     geom_bar(stat="identity", col="black", fill="orange") +
-+     theme(axis.text.x = element_text(angle=90,hjust=1,vjust=0.5)) +
-+     labs(title="Causes of California wildfires, 2000-2017",
-+          caption="Source: CalFire") +
-+     xlab("Cause") + ylab("Acreage")
+><code>ggplot(FireCauses, aes(x=CAUSE, y=GIS_ACRES)) + 
+geom_bar(stat="identity", col="black", fill="orange") +
+theme(axis.text.x = element_text(angle=90,hjust=1,vjust=0.5)) +
+labs(title="Causes of California wildfires, 2000-2017",
+caption="Source: CalFire") +
+xlab("Cause") + ylab("Acreage")</code>
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/Wildfire_causes.png?raw=true)
 
