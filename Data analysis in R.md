@@ -25,10 +25,10 @@ As you may have heard, California has two seasons, fire and flood. Let us now po
 Now we'll get a quick idea of the Wildfires dataframe's structure with the str() function.
 
 > str(Wildfires)
-Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	11795 obs. of  14 variables:
- $ YEAR      : num  2016 2016 2016 2016 2016 ...
+Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	11977 obs. of  14 variables:
+ $ YEAR      : num  1878 1895 1896 1898 1898 ...
  $ STATE     : chr  "California" "California" "California" "California" ...
- $ AGENCY    : chr  "National Park Service" "California Department of Forestry
+ $ AGENCY    : chr  "Contract County" "Contract County" "Contract County" "Contract County" ...
 
 Whoa! There are nearly 12,000 fires here ("11795 obs"). Let's make a chart and see how many of them are big. We'll do that using ggplot, the ingenious charting tool built into the tidyverse. We'll dive right in, and then I'll explain how it works:
 
@@ -60,3 +60,4 @@ Yes, there are 657 colors. So let's make two other changes to our wildfire plot:
 +     xlab("Year") + ylab("Acreage") +
 +     theme_minimal()
 
+![]()
