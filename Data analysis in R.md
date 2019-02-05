@@ -77,13 +77,15 @@ The summary() function is good most of the time; if you want more precise values
 
 Let's narrow our focus to the most recent fires in the data, those that occurred from 2000 through 2017. First we'll filter the Wildfires dataframe and create a new dataframe with just the recent data. Then we'll analyze the new dataframe.
 
-> RecentFires <- Wildfires %>% 
-+     filter(YEAR >= 2000)
+> <code>RecentFires <- Wildfires %>% 
+ filter(YEAR >= 2000)</code>
 
 We'll use another tool to summarize the data by acreage, quantiles. Pay close attention to this command -- it's tricky.
 
 > quantile(RecentFires$GIS_ACRES, c(0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99), na.rm=T)
+
         5%        10%        25%        50%        75%        90%        95%        99% 
+        
   114.4208   133.8902   206.0898   501.5787  1949.1175  9343.3310 22146.7040 80108.3956
   
 The worst 1% of wildfires burned at least 80,000 acres. We know that some fires in the past 20 years burned five times that much.
