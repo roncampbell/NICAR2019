@@ -87,7 +87,13 @@ We'll use another tool to summarize the data by acreage, quantiles. Pay close at
   114.4208   133.8902   206.0898   501.5787  1949.1175  9343.3310 22146.7040 80108.3956
   
 The worst 1% of wildfires burned at least 80,000 acres. We know that some fires in the past 20 years burned five times that much.
+
+Let's graph the fires to get a better idea of their relative size. We'll use a graphic called a histogram, which breaks things up into "bins" based on their frequency. See if you follow the logic of the command.
+
+> ggplot(RecentFires, aes(GIS_ACRES)) + geom_histogram(bins=50)
   
+![]()
+
 Now let's look at the causes of some of these fires using the handy tabyl function in the janitor package. (Janitor is also useful for cleaning up data - thus its name.)
 
 > tabyl(RecentFires, CAUSE)
