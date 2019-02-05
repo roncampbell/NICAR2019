@@ -144,4 +144,15 @@ Now let's come to Orange County and dig into one of my favorite things, Census d
 Now type View(OC_Residents) and you'll see we have a problem - actually a couple of problems. First, the column headers appear in the first row; the actual headers are meaningless. Second and more important, most of the values appear to be strings rather than integers. We'll fix all of those right now. First step is to find out the dimensions of the file:
 
 > dim(OC_Residents)
+
 [1] 584  15
+
+This means there are 584 rows and 15 columns. As you'll see, we don't need some of the columns. But we need to change the types of those we do need, and for convenience we'll want to rename them too. To do both we'll use something called column indexing, using the index number of a column in brackets from [1] to [15]. To alter a name we'll use the function colnames(). To eliminate a column entirely we'll use the powerful word NULL; be very, very careful with that one because there's no going back.
+
+Here are the first few name changes:
+
+> <code>colnames(OC_Residents)[2] <- "ID"
+colnames(OC_Residents)[3] <- "Geography"
+colnames(OC_Residents)[4] <- "TotalPop"</code>                                     
+
+
