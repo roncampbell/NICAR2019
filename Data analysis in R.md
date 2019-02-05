@@ -190,7 +190,7 @@ mutate(Immigrants = sum(Naturalized + Noncitizen),
 geom_smooth()
 `geom_smooth()` using method = 'loess' and formula 'y ~ x'</code>
 
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/OC_Pop_immigrants.png?raw=true)
 
 The blue line with the gray error shading shows the apparent relationship between Orange County's total and immigrant population by tract. In most tracts close to a quarter of all residents were born abroad, but the error grows wider as population grows.
 
