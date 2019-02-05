@@ -65,9 +65,12 @@ theme_minimal()</code>
 The graph makes clear that there are thousands of relatively small fires and a handful of gigantic ones. Let's drill down and take a closer look using some tools to summarise the data. There are several ways to do that, and we're going to try two of them -- Base R's summary() and the mosaic package's aptly named favstats().
 
 > summary(Wildfires$GIS_ACRES)
+
     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
    100.0    236.5    512.9   2817.6   1465.7 501082.0 
+   
 > favstats(Wildfires$GIS_ACRES)
+
       min       Q1   median       Q3    max     mean       sd     n
  100.0275 236.4592 512.9036 1465.738 501082 2817.561 11611.32 11977
  missing
