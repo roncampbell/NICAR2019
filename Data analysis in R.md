@@ -194,13 +194,30 @@ geom_smooth()
 
 The blue line with the gray error shading shows the apparent relationship between Orange County's total and immigrant population by tract. In most tracts close to a quarter of all residents were born abroad, but the error grows wider as population grows.
 
+It's often useful to categorize data. We'll classify Orange County tracts by the percentage of immigrants each has. But first let's get a better handle on their immigrant share using R's quantile tool. 
+
+> quantile(OC_Residents$ImmigrantPer, c(0.1, 0.25, 0.35, 0.5, 0.6, 0.75, 0.9, 0.95),na.rm=T)
+
+     10%      25%      35%      50%      60%      75%      90%      95% 
+     
+12.08220  16.76027  21.08368  26.59105  31.25812  38.82780  47.13526  51.14030
+
+We just split OC tracts into quantiles. In the lowest quarter of tracts, 16.76% of residents are immigrants. In the highest quarter of tracts, 38.83% of residents are immigrants. We can use that information to classify the data, using dplyr's mutate function.
+
+> <code>OC_Residents <- OC_Residents %>% 
+mutate(Share = case_when(
+ImmigrantPer <= 16.76027 ~ "Low",
+ImmigrantPer > 16.76027 & ImmigrantPer <= 26.59105 ~ "MedLow",
+ImmigrantPer > 26.59105 & ImmigrantPer <=38.82780 ~ "MedHigh",
+ImmigrantPer > 38.82780 ~ "High"))</code>
+
 Now let's look at income in OC census tracts. We'll import income data much the same way we brought in the citizenship data.
 
 > OC_Income <- read_csv("ACS_17_5YR_B19013 - tracts.csv", skip= 1)
 
-There are fewer columns this time, but the headers look even more obnoxious. Let's not bother with janitor::clean_names(). We'll change them ourselves. The name of Column 2 becomes "ID", Column 3 becomes "Geography", Column 4 becomes "MedianHHInc", Column 5 becomes "MOE". When you've renamed those columns, eliminate Column 1 because its name is too similar to Column 2.
+There are fewer columns this time, but the headers look even more obnoxious. Let's not bother with janitor::clean_names(). We'll change the column names ourselves. The name of Column 2 becomes "ID", Column 3 becomes "Geography", Column 4 becomes "MedianHHInc", Column 5 becomes "MOE". When you've renamed those columns, eliminate Column 1 because its name is too similar to Column 2.
 
-If you've forgotten, here's the way to rename columns:
+If you've forgotten, here's how to rename columns:
 
 > colnames(OC_Income)[2] <- "ID"
 
@@ -225,4 +242,16 @@ theme_minimal()</code>
 ![](https://github.com/roncampbell/NICAR2019/blob/images/OC_income.png?raw=true)
 
 So far we've analyzed Orange County immigration and household income by census tract. Is there a relation between the two? To find out, let's join the two datasets. If you've merged data in SQL, you'll find the process in R to be pretty familiar. We're joining two dataframes, OC_Residents and OC_Income, each with 583 rows, each with what looks like a common field called "ID". 
+
+> OC_ResInc <- inner_join(OC_Residents, OC_Income, by="ID")
+
+The resulting dataframe contains two duplicate columns -- Geography.x and Geography.y. We can solve that problem easily by eliminating the duplicate and renaming the other, first making sure we've got the right columns.
+
+> colnames(OC_ResInc)[19]
+[1] "Geography.y"
+> OC_ResInc[19] <- NULL
+> colnames(OC_ResInc)[3]
+[1] "Geography.x"
+> colnames(OC_ResInc)[3] <- "Geography"
+
 
