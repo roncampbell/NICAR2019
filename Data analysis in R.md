@@ -2,7 +2,7 @@
 
 Thousands of packages make R the Swiss Army knife of software with a tool for almost every job. The NICAR staff has installed four packages for participants at the conference: tidverse, mosaic, janitor and descr. For those reading this tip sheet outside the conference, here's a reminder of how to install a package, using the tidyverse as an example:
 
-install.packages("tidyverse")
+> install.packages("tidyverse")
 
 Notice the plural in "packages" and the quote marks around the name of the package to be installed. They're important. If you forget them, R will ding you with an error. But installing packages is not enough. Packages use memory and can slow performance; so R keeps them turned off unless you specifically activate them with the command library(xxx) where xxx -- no quote marks! -- is the name of a package. Let's get started by activating some previously installed packages.
 
@@ -22,17 +22,17 @@ We're going to spend some time exploring Orange County with Census data. We'll u
 
 > OC_Residents <- read_csv("ACS_17_5YR_B05001 - tracts.csv", skip = 1)
 
-Now type View(OC_Residents) and you'll see we have a problem - actually a couple of problems. First, the column headers are very strange - huge actually. Second and more important, most of the values appear to be strings rather than integers. We'll fix all of those right now. Sometimes we can fix column names with the janitor package and its self-described clean_names function.
+Now type View(OC_Residents) and you'll see we have a problem - actually a couple of problems. First, the column headers are very strange - huge actually. Second and more important, most of the values appear to be strings rather than integers. We'll fix these problems right now. Sometimes we can fix column names with the janitor package and its self-explanatory clean_names function.
 
 > OC_Residents <- janitor::clean_names(OC_Residents)
 
-But in this particular case janitor leaves us with awkwardly long names. So let's clean them ourselves. First step is to learn how many columns there are.
+Unfortunately janitor leaves us with awkwardly long names. So let's clean them ourselves. First step is to learn how many columns there are.
 
 > dim(OC_Residents)
 
 [1] 584  15
 
-This means there are 584 rows and 15 columns. As you'll see, we don't need some of the columns. But we need to change the types of those we do need, and for convenience we'll want to rename them too. To do both we'll use something called column indexing, using the index number of a column in brackets from [1] to [15]. To alter a name we'll use the function colnames(). To eliminate a column entirely we'll use the powerful word NULL; be very, very careful with that one because there's no going back.
+This means there are 584 rows and 15 columns. We need to rename some of those columns and change a few of their types as well. To do both we'll use something called column indexing, using the index number of a column in brackets from [1] to [15]. To alter a name we'll use the function colnames(). To eliminate a column entirely we'll use the powerful word NULL; be very, very careful before you NULL a column because there's no going back.
 
 Here are the first few name changes:
 
@@ -40,13 +40,11 @@ Here are the first few name changes:
 colnames(OC_Residents)[3] <- "Geography"
 colnames(OC_Residents)[4] <- "TotalPop"</code>                                     
 
-I'll make similar changes to the columns for "Native", "US_PR" (Puerto Rico), "US_BornAbroad", "Naturalized" and "Noncitizen". These are columns 6, 8, 10, 12 and 14; make sure you have the right column indexes when you rename these columns. Then it's time to eliminate columns. I usually start from the right side and move to left. It's always a good idea to check the column name first, for example  by typing "colnames(OC_Residents)[15]" in the console and hiting enter; this will tell you for sure if you're about to zap the column you really intend to terminate with extreme prejudice. Remember, once you do the NULL trick, a column is gone.
+We'll also rename the columns for "Native", "US_PR" (Puerto Rico), "US_BornAbroad", "Naturalized" and "Noncitizen". These are columns 6, 8, 10, 12 and 14; make sure you have the right column indexes when you rename these columns. We can also eliminate some columns if we wish. It's always a good idea to check the column name first, for example  by typing "colnames(OC_Residents)[15]" in the console and hiting enter; this will tell you for sure if you're about to zap the column you really intend to terminate with extreme prejudice. Remember, once you do the NULL trick, a column is gone.
 
 > OC_Residents[15] <- NULL
 
-Bye-bye.
-
-Now let's change the column types from string to numbers. I'll show you how to do it for TotalPop, and then you do it for the Native, Naturalized and Noncitizen columns.
+Remember, some columns in the dataframe that should be numbers are currently characters. I'll show you how to change TotalPop from character to numeric, and then you do it for the Native, Naturalized and Noncitizen columns.
 
 > OC_Residents$TotalPop <- as.numeric(OC_Residents$TotalPop)
 
@@ -57,7 +55,7 @@ group_by(ID) %>%
 mutate(Immigrants = sum(Naturalized + Noncitizen),
  ImmigrantPer = (Immigrants / TotalPop) * 100)</code>
  
- There are several ways to crunch this data in R. A couple of my favorites are the Base R summary() function and the mosaic package's aptly named favstats tool. Let's try them both.
+There are several ways to crunch this data in R. A couple of my favorites are the Base R summary() function and the mosaic package's aptly named favstats tool. Let's try them both.
  
  > summary(OC_Residents$ImmigrantPer)
  
@@ -71,13 +69,13 @@ mutate(Immigrants = sum(Naturalized + Noncitizen),
  
    0  16.76027  26.59105  38.8278  63.0132  28.37704  13.31743  582       1
    
- Summary() is good most of the time, but when you need precision and especially when you want to keep tabs on the standard deviation and missing values, favstats() lives up to its name. But nothing beats a good chart for capturing the meaning of a statistic. I've been dealing with stats for a couple of decades, and I still get more from a histogram than I do from a summary.
+Summary() is good most of the time, but when you need precision and especially when you want to keep tabs on the standard deviation and missing values, favstats() lives up to its name. But nothing beats a good chart for capturing the meaning of a statistic. I've been dealing with stats for a couple of decades, and I still get more from a histogram than I do from a summary.
  
  > ggplot(OC_Residents, aes(ImmigrantPer)) + geom_histogram()
  
-This is a basic histogram of the percentage of immigrants in all 583 Orange County census tracts. The structure of the command is essentially the same every time: the word ggplot, followed by parentheses, the name of the dataset, the word aes (short for aesthetic, and then in another set of parentheses, the variables to be charted; next the type of graphic. Everything after that is optional. And you can add a lot of options.
+This is a basic histogram of the percentage of immigrants in all 583 Orange County census tracts. The structure of the command is essentially the same every time: the word ggplot, followed by parentheses, the name of the dataset, the word aes (short for aesthetic), and then in another set of parentheses, the variables to be charted; next the type of graphic. Everything after that is optional. You can add a lot of options.
 
-First, let's change the color of the histogram; get rid of the dull gray background. Then let's add labels to the x- and y-axes. Add a title and a source too. Notice as we do that each line ends with a "+" sign, unless we're continuing material inside parentheses. Another thing: While lines and boundaries in ggplot have color, abbreviated "col", objects have "fill". 
+First, let's change the color of the histogram and get rid of the dull gray background. Then let's add labels to the x- and y-axes. Add a title and a source too. Notice as we do that each line ends with a "+" sign, unless we're continuing material inside parentheses. Another thing: While lines and boundaries in ggplot have color, abbreviated "col", objects have "fill". 
 
 And one last detail: You've got a lot of choices when it comes to color. How many choices? I'm glad you asked.
 
@@ -94,12 +92,7 @@ theme_minimal()</code>
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/Immig_Histogram.png?raw=true)
 
-
-
-
- 
- 
- Oooh, let's graph this. And this time, let's plot a curve.
+Another way to look at the data is to examine the relationship between the total population and the number of immigrants. We can do that with a scatterplot. This is just what it sounds like: a bunch of dots plotted against two variables on an X-Y axis. You can even add a line to show the trend of the data.
  
  > <code>ggplot(OC_Residents, aes(x=TotalPop, y=Immigrants)) + geom_point() +
 geom_smooth()
@@ -109,7 +102,7 @@ geom_smooth()
 
 The blue line with the gray error shading shows the apparent relationship between Orange County's total and immigrant population by tract. In most tracts close to a quarter of all residents were born abroad, but the error grows wider as population grows.
 
-It's often useful to categorize data. We'll classify Orange County tracts by the percentage of immigrants each has. But first let's get a better handle on their immigrant share using R's quantile tool. 
+It's often useful to categorize data. We'll classify Orange County tracts by the percentage of immigrants each tract has. But before we do that, let's get a better handle on their immigrant share using R's quantile tool. The syntax is a bit tricky. We use the "c" operator, which stands for "concatenate" because we're throwing several numbers together. And we include the term "na.rm=T", short for "remove all NA values=TRUE", meaning "ignore every missing value in the data." 
 
 > quantile(OC_Residents$ImmigrantPer, c(0.1, 0.25, 0.35, 0.5, 0.6, 0.75, 0.9, 0.95),na.rm=T)
 
@@ -117,7 +110,7 @@ It's often useful to categorize data. We'll classify Orange County tracts by the
      
 12.08220  16.76027  21.08368  26.59105  31.25812  38.82780  47.13526  51.14030
 
-We just split OC tracts into quantiles. In the lowest quarter of tracts, 16.76% of residents are immigrants. In the highest quarter of tracts, 38.83% of residents are immigrants. We can use that information to classify the data, using dplyr's mutate function.
+We just split OC tracts into quantiles. In the lowest quarter of tracts, 16.76% of residents are immigrants. In the highest quarter of tracts, 38.83% of residents are immigrants. With this information we can now classify the data, using dplyr's mutate function. 
 
 > <code>OC_Residents <- OC_Residents %>% 
 mutate(Share = case_when(
@@ -125,6 +118,8 @@ ImmigrantPer <= 16.76027 ~ "Low",
 ImmigrantPer > 16.76027 & ImmigrantPer <= 26.59105 ~ "MedLow",
 ImmigrantPer > 26.59105 & ImmigrantPer <=38.82780 ~ "MedHigh",
 ImmigrantPer > 38.82780 ~ "High"))</code>
+
+We just created a new column in the dataframe called Share; each tract has one of four values, based on the percentage of immigrants.
 
 Now let's look at income in OC census tracts. We'll import income data much the same way we brought in the citizenship data.
 
