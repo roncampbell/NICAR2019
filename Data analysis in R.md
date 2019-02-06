@@ -92,7 +92,7 @@ caption="Source: U.S. Census Bureau") +
 xlab("Immigrant percentage") + ylab("Census tracts") +
 theme_minimal()</code>
 
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/Immig_Histogram.png?raw=true)
 
 
 
