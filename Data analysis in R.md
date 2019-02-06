@@ -274,4 +274,4 @@ geom_boxplot() +
 facet_grid(. ~ Share) +
 xlab("Immigrant Percentage") + ylab("Median Household Income")</code>
 
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/ImmigInc_boxplot.png?raw=true)
