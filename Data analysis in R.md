@@ -247,11 +247,31 @@ So far we've analyzed Orange County immigration and household income by census t
 
 The resulting dataframe contains two duplicate columns -- Geography.x and Geography.y. We can solve that problem easily by eliminating the duplicate and renaming the other, first making sure we've got the right columns.
 
-> colnames(OC_ResInc)[19]
+> <code>colnames(OC_ResInc)[19]
 [1] "Geography.y"
 > OC_ResInc[19] <- NULL
 > colnames(OC_ResInc)[3]
 [1] "Geography.x"
-> colnames(OC_ResInc)[3] <- "Geography"
+ > colnames(OC_ResInc)[3] <- "Geography"</code>
 
+Let's first see if there's a correlation between median household income and the percentage of immigrants in OC tracts. When doing correlation - in fact with many statistical procedures - you must beware of NA values. So we'll throw in a bit of code to ward off the NA beast.
 
+> <code>cor(OC_ResInc$ImmigrantPer, OC_ResInc$MedianHHIncome, use="pairwise.complete.obs")
+[1] -0.5889496</code>
+
+This suggests that the percentage of immigrants is associated with reduced median household income. Interesting, but we can do better. We categorized tracts by the percentage of immigrants so we could do a deeper analysis. So let's look specifically at median household income in each tract by its immigrant share category -- Low, Medium-Low, Medium-High and High. We'll use a graphic called a box plot to do that. And we'll use a "facet" to make it easy to compare the categories.
+
+> <code>ggplot(OC_ResInc, aes(x="Income", y=MedianHHIncome)) +
+geom_boxplot() +
+facet_grid(Share ~ .)</code>
+
+First a quick explanation of boxplots: The thick horizontal line in each box is the median; the lower and upper lines represent the 25th and 75th percentiles respectively and are known as the Interquartile Range, IQR for short. The vertical lines extending outward are known as whiskers and typically extend for 1-1/2 times the length of the IQR. Any points beyond the whisker are by definition outliers.
+
+The boxplots clearly show that tracts with a high percentage of immigrants tend to have lower median household incomes. We can make the graphic better by removing the blank NA boxplot on the right. To do that, we'll filter the graphic to remove the three tracts with no immigrants. While we're at it, we'll also label the x- and y-axes.
+
+> <code>ggplot(filter(OC_ResInc, Immigrants > 0), aes(x="Income", y=MedianHHIncome)) +
+geom_boxplot() +
+facet_grid(. ~ Share) +
+xlab("Immigrant Percentage") + ylab("Median Household Income")</code>
+
+![]()
