@@ -224,3 +224,5 @@ theme_minimal()</code>
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/OC_income.png?raw=true)
 
+So far we've analyzed Orange County immigration and household income by census tract. Is there a relation between the two? To find out, let's join the two datasets. If you've merged data in SQL, you'll find the process in R to be pretty familiar. We're joining two dataframes, OC_Residents and OC_Income, each with 583 rows, each with what looks like a common field called "ID". 
+
