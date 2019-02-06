@@ -18,11 +18,11 @@ And now for a curveball: The tidyverse is a package of packages -- the "core tid
 
 > library(readxl)
 
-Now let's come to Orange County and dig into one of my favorite things, Census data. We'll use a great part of the tidyverse, readr, to open a comma-separated variable (csv) file on your computers. Since the Census Bureau habitually provides two rows of column headers, we'll tell R to skip the first line.
+We're going to spend some time exploring Orange County with Census data. We'll use a key part of the tidyverse, readr, to open a comma-separated variable (csv) file on your computers. Since the Census Bureau habitually provides two rows of column headers, we'll tell R to skip the first line.
 
 > OC_Residents <- read_csv("ACS_17_5YR_B05001 - tracts.csv", skip = 1)
 
-Now type View(OC_Residents) and you'll see we have a problem - actually a couple of problems. First, the column headers very strange - huge actually. Second and more important, most of the values appear to be strings rather than integers. We'll fix all of those right now. Sometimes we can fix column names with the janitor package and its self-described clean_names function.
+Now type View(OC_Residents) and you'll see we have a problem - actually a couple of problems. First, the column headers are very strange - huge actually. Second and more important, most of the values appear to be strings rather than integers. We'll fix all of those right now. Sometimes we can fix column names with the janitor package and its self-described clean_names function.
 
 > OC_Residents <- janitor::clean_names(OC_Residents)
 
@@ -46,8 +46,6 @@ I'll make similar changes to the columns for "Native", "US_PR" (Puerto Rico), "U
 
 Bye-bye.
 
-There are still a couple of things left to do. First that top row is useless. Let's get rid of it.
-
 Now let's change the column types from string to numbers. I'll show you how to do it for TotalPop, and then you do it for the Native, Naturalized and Noncitizen columns.
 
 > OC_Residents$TotalPop <- as.numeric(OC_Residents$TotalPop)
@@ -58,12 +56,48 @@ Orange County has a surfer-dude, white-girl reputation. In fact, it's majority m
 group_by(ID) %>% 
 mutate(Immigrants = sum(Naturalized + Noncitizen),
  ImmigrantPer = (Immigrants / TotalPop) * 100)</code>
+ 
+ There are several ways to crunch this data in R. A couple of my favorites are the Base R summary() function and the mosaic package's aptly named favstats tool. Let's try them both.
+ 
+ > summary(OC_Residents$ImmigrantPer)
+ 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+   
+   0.00    16.76    26.59    28.38    38.83    63.01       1 
 
 > favstats(OC_Residents$ImmigrantPer)
 
  min       Q1   median      Q3     max     mean       sd   n missing
  
    0  16.76027  26.59105  38.8278  63.0132  28.37704  13.31743  582       1
+   
+ Summary() is good most of the time, but when you need precision and especially when you want to keep tabs on the standard deviation and missing values, favstats() lives up to its name. But nothing beats a good chart for capturing the meaning of a statistic. I've been dealing with stats for a couple of decades, and I still get more from a histogram than I do from a summary.
+ 
+ > ggplot(OC_Residents, aes(ImmigrantPer)) + geom_histogram()
+ 
+This is a basic histogram of the percentage of immigrants in all 583 Orange County census tracts. The structure of the command is essentially the same every time: the word ggplot, followed by parentheses, the name of the dataset, the word aes (short for aesthetic, and then in another set of parentheses, the variables to be charted; next the type of graphic. Everything after that is optional. And you can add a lot of options.
+
+First, let's change the color of the histogram; get rid of the dull gray background. Then let's add labels to the x- and y-axes. Add a title and a source too. Notice as we do that each line ends with a "+" sign, unless we're continuing material inside parentheses. Another thing: While lines and boundaries in ggplot have color, abbreviated "col", objects have "fill". 
+
+And one last detail: You've got a lot of choices when it comes to color. How many choices? I'm glad you asked.
+
+> colors()
+
+Yeah, R has 657 colors. 
+
+> <code>ggplot(OC_Residents, aes(ImmigrantPer)) +
+geom_histogram(col="black", fill="lightskyblue2") +
+labs(title="Immigrant population of Orange County census tracts",
+caption="Source: U.S. Census Bureau") +
+xlab("Immigrant percentage") + ylab("Census tracts") +
+theme_minimal()</code>
+
+![]()
+
+
+
+
+ 
  
  Oooh, let's graph this. And this time, let's plot a curve.
  
