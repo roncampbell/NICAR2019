@@ -301,7 +301,7 @@ caption="Source: CalFire") +
 xlab("Cause") + ylab("Acres burned") +
 theme_minimal()</code>
 
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/Wildfire_CauseBar.png?raw=true)
 
 
 
