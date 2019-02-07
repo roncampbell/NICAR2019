@@ -1,6 +1,6 @@
 # Data analysis and plotting in R
 
-Thousands of packages make R the Swiss Army knife of software with a tool for almost every job. The NICAR staff has installed four packages for participants at the conference: tidverse, mosaic, janitor and descr. For those reading this tip sheet outside the conference, here's a reminder of how to install a package, using the tidyverse as an example:
+Thousands of packages make R the Swiss Army knife of software with a tool for almost every job. The NICAR staff has installed four packages for participants at the conference: tidyverse, mosaic, janitor and descr. For those reading this tip sheet outside the conference, here's a reminder of how to install a package, using the tidyverse as an example:
 
 > install.packages("tidyverse")
 
@@ -44,7 +44,7 @@ We'll also rename the columns for "Native", "US_PR" (Puerto Rico), "US_BornAbroa
 
 > OC_Residents[15] <- NULL
 
-Remember, some columns in the dataframe that should be numbers are currently characters. I'll show you how to change TotalPop from character to numeric, and then you do it for the Native, Naturalized and Noncitizen columns.
+We still need the change the data type of some columns from character to numeric. I'll show you how to do that with TotalPop. Then you can do it for the Native, Naturalized and Noncitizen columns.
 
 > OC_Residents$TotalPop <- as.numeric(OC_Residents$TotalPop)
 
@@ -186,7 +186,7 @@ xlab("Immigrant Percentage") + ylab("Median Household Income")</code>
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/ImmigInc_boxplot.png?raw=true)
 
-As you may have heard, California has two seasons, fire and flood. Let us now ponder fire. CalFire, the state's wildlands fire department, keeps track of wildfires going back decades on an Excel spreadsheet. We'll import, analyze and visualize California's fiery past.
+As you may have heard, California has two seasons, fire and flood. Let us now ponder fire. CalFire, the state's wildlands fire department, keeps track of wildfires going back decades on an Excel spreadsheet. We'll import, analyze and visualize California's fiery past using the tidyverse readxl package that we opened earlier.
 
 > Wildfires <- read_excel("CA_wildfires.xlsx")
 
@@ -198,7 +198,7 @@ Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	11977 obs. of  14 variables:
  $ STATE     : chr  "California" "California" "California" "California" ...
  $ AGENCY    : chr  "Contract County" "Contract County" "Contract County" "Contract County" ...
 
-Whoa! There are nearly 12,000 fires here ("11977 obs"). Let's make a chart and see how many of those fires are big. We'll do that using ggplot, the ingenious charting tool built into the tidyverse. We'll dive right in, and then I'll explain how it works:
+Whoa! There are nearly 12,000 fires here ("11977 obs"). Let's make a chart and see how many of those fires are big. 
 
 > <code>ggplot(Wildfires, aes(x=YEAR, y=GIS_ACRES)) + geom_point() +
 labs(title="California wildfire history",
@@ -220,7 +220,7 @@ theme_minimal()</code>
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/Fire_scatter.png?raw=true)
 
-The graph makes clear that there are thousands of relatively small fires and a handful of gigantic ones. Let's drill down and take a closer look using some tools to summarise the data. There are several ways to do that, and we're going to try two of them -- Base R's summary() and the mosaic package's aptly named favstats().
+The graph makes clear that there are thousands of relatively small fires and a handful of gigantic ones. Let's summarise the data, again using Base R's summary() tool and mosaic's favstats(). 
 
 > summary(Wildfires$GIS_ACRES)
 
@@ -234,9 +234,9 @@ The graph makes clear that there are thousands of relatively small fires and a h
  missing
        0
        
-The summary() function is good most of the time; if you want more precise values and really need the standard deviation and missing values, favstats() is useful. Both show that the typical wildfire is small, with a median size of around 512 acres and a mean (mathematical average) of 2,817 acres. But notice that very high standard deviation -- 11,611 acres. That's the tell, the sign that the mean is, uh, meaningless.
+Both tools show that the typical wildfire is small, with a median size of around 512 acres and a mean (mathematical average) of 2,817 acres. But notice that very high standard deviation -- 11,611 acres. That's the tell, the sign that the mean is, uh, meaningless.
 
-Let's see if there's a historical pattern. We have nearly data for nearly 12,000 fires for more than a century. Maybe we can see something if we break them down by decade instead of by year. To do that, we again will use dplyr's mutate tool. We'll also use something most of us non-math majors never encountered, the modulus, or remainder from division. Specifically we'll transform years into their decade-equivalents.
+Perhaps there's a historical pattern. We have nearly data for nearly 12,000 fires going back more than a century. Maybe we can see something if we break them down by decade instead of by year. To do that, we again will use dplyr's mutate tool. We'll also use something most of us non-math majors never encountered, the modulus, or remainder from division. 
 
 > <code>Wildfires <- Wildfires %>% 
 mutate(
@@ -259,15 +259,14 @@ caption="Source: CalFire")</code>
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/Wildfires_Timeline.png?raw=true)
 
-
-
+The pattern is alarmingly clear. And don't let the gap between the 2000's and 2010's fool you; we're missing data from 2018, which saw some of the biggest wildfires in California history.
 
 Let's narrow our focus to the most recent fires in the data, those that occurred from 2000 through 2017. First we'll filter the Wildfires dataframe and create a new dataframe with just the recent data. Then we'll analyze the new dataframe.
 
 > <code>RecentFires <- Wildfires %>% 
  filter(YEAR >= 2000)</code>
 
-We'll use another tool to summarize the data by acreage, quantiles. Pay close attention to this command -- it's tricky.
+We'll use the quantile() tool to summarize the data by acreage.
 
 > quantile(RecentFires$GIS_ACRES, c(0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99), na.rm=T)
 
@@ -275,41 +274,37 @@ We'll use another tool to summarize the data by acreage, quantiles. Pay close at
         
   114.4208   133.8902   206.0898   501.5787  1949.1175  9343.3310 22146.7040 80108.3956
   
-The worst 1% of wildfires burned at least 80,000 acres. We know that some fires in the past 20 years burned five times that much.
+The worst 1% of wildfires burned at least 80,000 acres. We know that some fires in the past 20 years burned five times that much. So let's identify that top 1%.
 
-Let's graph the fires to get a better idea of their relative size. We'll use a graphic called a histogram, which breaks things up into "bins" based on their frequency. See if you follow the logic of the command.
-
-> ggplot(RecentFires, aes(GIS_ACRES)) + geom_histogram(bins=50)
-  
-![](https://github.com/roncampbell/NICAR2019/blob/images/Wildfire_histogram.png?raw=true)
-
-I divided the data into 50 groups or "bins". If I hadn't done that, ggplot would have automatically split the data into 30 bins. Even with the extra dividing, it's obvous that there are very, very few giant wildfires. The histogram reaffirms what the numbers have already told us: Most wildfires are (relatively) small.
-
-But what causes the most fires? We can find out by crosstabbing the CAUSE and GIS_ACRES columns. One easy way to do that is with the aggregate() function in Base R. Since we're going to chart it, let's save the results to a variable.
-
-> FireCauses <- aggregate(GIS_ACRES ~ CAUSE, RecentFires, sum)
-> FireCauses
-                           CAUSE    GIS_ACRES
-1                         <Null>   46033.9913
-2                  1 - Lightning 4529748.6658
-3                   10 - Vehicle  355979.9253
-4                 11 - Powerline  149804.5863
+> <code>BigRecentFires <- RecentFires %>% 
+ filter(GIS_ACRES > 80000)</code>
  
-There are 19 listed causes, including the all-purpose "Null", meaning "nobody knows". Let's do a bar chart to put everything in perspective. Since bar charts can few different forms -- single, stacked or side-by-side -- we have to specify what we want. For a bar chart with one categorical variable and one continuous variable, use stat="identity". With two categorical variables, you have a choice -- either stack the bars or place them side by side; for the former, use different fills to indicate the variables; for the latter, use position="dodge".
+ Now what causes those big fires? To find out, let's crosstab the CAUSE and GIS_ACRES columns. There are several ways to do a crosstab in R. One of the easiest is with the Base R function aggregate(). Here's how it works.
+ 
+> FireCauses <- aggregate(GIS_ACRES ~ CAUSE, BigRecentFires, sum)
 
-> <code>ggplot(FireCauses, aes(x=CAUSE, y=GIS_ACRES)) + 
-geom_bar(stat="identity")</code>
+It takes a continuous variable, in this case GIS_ACRES, and then a categorical variable, in this case CAUSE. The two are separated by a tilde (~), which you'll usually find on the upper lefthand corner of the keyboard. Next comes the dataframe, and finally the function to be applied, usually sum, mean or median.
 
-This gives a simple bar chart, and an ugly one with a run-on x-axis. We can do a lot better. The obvious cure is to tilt the x-axis on its side. There's some code online to help us do that. While we're at it, let's add some color to the bars, write a headline and change the axis labels. Again, we're going to write this chart in layers, adding pieces a bit at a time. One other note: In ggplot, "col" or color applies to lines like the outline of a bar; "fill" applies to the interior of an object.
+Here are the first few lines of the result:
 
-><code>ggplot(FireCauses, aes(x=CAUSE, y=GIS_ACRES)) + 
-geom_bar(stat="identity", col="black", fill="orange") +
-theme(axis.text.x = element_text(angle=90,hjust=1,vjust=0.5)) +
-labs(title="Causes of California wildfires, 2000-2017",
+                        CAUSE  GIS_ACRES
+1               1 - Lightning 1448994.26
+2                10 - Vehicle   83581.41
+3 14 - Unknown / Unidentified  198298.73
+
+Now let's chart acres burned by cause by year. We can do that with a stacked bar chart. In this chart, we use YEAR as the x or categorical variable, GIS_ACRES as the y or continuous variable, and then we do something new: We use CAUSE as the fill for the bars.
+
+> <code>ggplot(BigRecentFires, aes(x=YEAR, y=GIS_ACRES, fill=CAUSE)) +
+geom_bar(stat="identity") +
+labs(title="Big California wildfires by cause, 2000-2017",
 caption="Source: CalFire") +
-xlab("Cause") + ylab("Acreage")</code>
+xlab("Cause") + ylab("Acres burned") +
+theme_minimal()</code>
 
-![](https://github.com/roncampbell/NICAR2019/blob/images/Wildfire_causes.png?raw=true)
+![]()
+
+
+
 
 Who fights the fires? The answer is in the column AGENCY. Again, we can get a breakdown of firefighting by cause and agency with a simple crosstab. Or we can find out with a picture. Since we already know the x-axis with causes is hard to read, let's borrow the code we used last time. This time, however, we'll do something different. We'll "fill" the bars with the AGENCY variable to create a stacked bar graph. That will show which agencies did the most work fighting which types of fires.
 
