@@ -186,17 +186,6 @@ xlab("Immigrant Percentage") + ylab("Median Household Income")</code>
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/ImmigInc_boxplot.png?raw=true)
 
-
-
-
-
-
-
-
-
-
-
-
 As you may have heard, California has two seasons, fire and flood. Let us now ponder fire. CalFire, the state's wildlands fire department, keeps track of wildfires going back decades on an Excel spreadsheet. We'll import, analyze and visualize California's fiery past.
 
 > Wildfires <- read_excel("CA_wildfires.xlsx")
@@ -211,28 +200,16 @@ Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	11977 obs. of  14 variables:
 
 Whoa! There are nearly 12,000 fires here ("11977 obs"). Let's make a chart and see how many of those fires are big. We'll do that using ggplot, the ingenious charting tool built into the tidyverse. We'll dive right in, and then I'll explain how it works:
 
-> ggplot(Wildfires, aes(x=YEAR, y=GIS_ACRES)) + geom_point()
-
-Every ggplot command begins the same way, by invoking the command ggplot, followed by parentheses and, inside the parentheses the data and the exact parts of the data we're going to map; these are known as aesthetics and abbreviated "aes". For this chart, the x or horizontal axis is the column YEAR (all caps because that's the way it is in the dataframe) and the y or vertical axis is GIS_ACRES. Next we specify how we want to display the data: a geom_point, aka a scatterplot, which places dots on an X-Y matrix.
-
-Now you might notice something odd about the Y axis; the numbers are in scientific (exponential) notation. Fortunately there's an easy way to deal with that in R.
-
-> options(scipen=999)
-
-After you've run the options command, re-run the ggplot command, and you'll get a chart with real numbers in the Y-axis. But we can still do lots more. The great thing about ggplot is that it works in layers. We can add items to it.
-
 > <code>ggplot(Wildfires, aes(x=YEAR, y=GIS_ACRES)) + geom_point() +
 labs(title="California wildfire history",
  caption="Source: CalFire") +
  xlab("Year") + ylab("Acreage")</code>
 
-Notice that when we add a new line (unless it's a continuation of something inside parentheses), we end the preceding line with a "+" sign; this is important because ggplot is fussy about grammar. 
+Now you might notice something odd about the Y axis; the numbers are in scientific (exponential) notation. Fortunately there's an easy way to deal with that in R.
 
-We've added a title and caption while changing the labels for the x and y axes. But we could really dress up the inside of the chart too. Those black dots look rather dreary, and so does the standard gray background. If you like color, R has got you covered.
+> options(scipen=999)
 
-> colors()
-
-Yes, R features 657 colors. So let's make two other changes to our wildfire plot:
+Let's run it again - this time with color points and a blank background.
 
 > <code>ggplot(Wildfires, aes(x=YEAR, y=GIS_ACRES)) + 
 geom_point(col="firebrick1") +
@@ -258,6 +235,32 @@ The graph makes clear that there are thousands of relatively small fires and a h
        0
        
 The summary() function is good most of the time; if you want more precise values and really need the standard deviation and missing values, favstats() is useful. Both show that the typical wildfire is small, with a median size of around 512 acres and a mean (mathematical average) of 2,817 acres. But notice that very high standard deviation -- 11,611 acres. That's the tell, the sign that the mean is, uh, meaningless.
+
+Let's see if there's a historical pattern. We have nearly data for nearly 12,000 fires for more than a century. Maybe we can see something if we break them down by decade instead of by year. To do that, we again will use dplyr's mutate tool. We'll also use something most of us non-math majors never encountered, the modulus, or remainder from division. Specifically we'll transform years into their decade-equivalents.
+
+> <code>Wildfires <- Wildfires %>% 
+mutate(
+ Decade = YEAR - (YEAR %% 10))</code>
+ 
+ Now we've got a new column called "Decade" at the 15th position on the far right end of the Wildfires dataframe. To keep things convenient, let's move it next to the YEAR column at the left. Here's how we'll do that. Again, if you're not sure exactly what you're doing, use colnames(dataframe)[] to make sure of the name of the column before you move it.
+ 
+> Wildfires <- Wildfires[,c(1,15,2:14)]
+
+Whenever you see something in square brackets in R with a comma, anything to the left of the comma refers to rows, and anything to the right refers to columns. In the command above, we concatenate -- there's that "c" again -- columns 1 and 15, followed by columns 2 through 14. This places the YEAR and Decade column next to each other followed by every other column in their former order.
+
+Now let's see if there's a historic pattern to wildfires in California. We'll make a bar chart, using Decade as the x (categorical) axis and GIS_ACRES as the y-axis. Bar charts can contain one, two or more categorical variables. For that reason you can't just say geom_bar(). You have to be specific -- stat="identity" for one categorical variable or if you're stacking 2+ variables; position="dodged" if you want to place two categorical variables side-by-side.
+
+> <code>ggplot(Wildfires, aes(x=Decade, y=GIS_ACRES)) + 
+geom_bar(stat="identity", fill="orange2") +
+theme_minimal() +
+xlab("Decade") + ylab("Acres burned") +
+labs(title="California wildfires",
+caption="Source: CalFire")</code>
+
+![]()
+
+
+
 
 Let's narrow our focus to the most recent fires in the data, those that occurred from 2000 through 2017. First we'll filter the Wildfires dataframe and create a new dataframe with just the recent data. Then we'll analyze the new dataframe.
 
