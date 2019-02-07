@@ -257,7 +257,7 @@ xlab("Decade") + ylab("Acres burned") +
 labs(title="California wildfires",
 caption="Source: CalFire")</code>
 
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/Wildfires_Timeline.png?raw=true)
 
 
 
