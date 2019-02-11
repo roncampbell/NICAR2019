@@ -49,11 +49,15 @@ To create a script in R Studio, click on the green "+" button at the upper left 
 Here's the code for summarizing population change by county by decade. 
 
 <code>library(tidyverse)              # make sure tidyverse is on
+  
 CA_popsum <- CA_popest %>%      # create new dataframe
+
   group_by(county, year) %>%    # grouping variables
+  
   filter(year == 1970 | year == 1980 | year == 1990 | year == 2000 | 
            year == 2010 | year == 2020 | year == 2030 | year == 2040 | 
            year == 2050) %>%    # once-a-decade data
+           
   summarise(
   Population = sum(pop_total, na.rm=T)) # get population for each year</code>
     
@@ -64,6 +68,8 @@ This script produces a 522-line dataframe. The data would make more sense if eac
 Here's an example: On line 1 of CA_popsum the key is 1970 and the value is 1072985; these two values are associated with each other (and with ALAMEDA). We'll make a new dataframe built of key:value frames like this.
 
 <code>library(tidyverse)
+  
 ca_popsum1 <- ca_popsum %>% 
+
   spread(key=year, value=Population)</code>
   
