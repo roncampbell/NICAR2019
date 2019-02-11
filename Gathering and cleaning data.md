@@ -77,4 +77,4 @@ ca_popsum1 <- ca_popsum %>%
 
   spread(key=year, value=Population)</code>
   
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/Popest2.png?raw=true)
