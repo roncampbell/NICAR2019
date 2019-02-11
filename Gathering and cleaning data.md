@@ -30,4 +30,13 @@ cols(
   
 > View(CA_popest) 
 
-The dataframe contains 474,125 rows and has 7 columns. If you're familiar with FIPS codes, you'll immediately notice a problem with the (lower-case) fips column in CA_popest. The FIPS code for California is "06", but it appears here without the leading zero. This is a potential problem if we want to merge the data or map it.
+The dataframe contains 474,125 rows and has 7 columns. If you're familiar with FIPS codes, you'll immediately notice a problem with the (lower-case) fips column in CA_popest. The FIPS code for California is "06", but it appears here without the leading zero. This is a potential problem if we want to merge the data or map it. 
+
+Fortunately it's easy to solve with the core tidyverse package stringr, which manipulates strings. The current fips field is 4 characters wide and lacks a leading zero. The field should be 5 characters wide (2 characters to identify the state, 3 to identify the county). Since the state is California in all cases, the first two characters should be "06"; we know from sorting the field in ascending and descending order that every row begins with a "6". All we need to do is widen the field from four characters to five and place an "0" in the first position, before the "6". 
+
+> CA_popest$FIPS <- str_pad(CA_popest$fips, 5, "left", pad = "0")
+
+This command creates a new field, FIPS (all caps), based on the existing field fips (lower case); it's 5 characters wide, padded on the left with the character "0". If you use the command View(CA_popest), you'll see the new field at the far right of the dataframe. Now all we have to do is move it to the left, where it will be more convenient. We can do that with column indexing.
+
+> <code>CA_popest <- CA_popest[,c(8,1,2:7)]</code>
+
