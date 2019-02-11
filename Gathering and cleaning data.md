@@ -63,7 +63,7 @@ CA_popsum <- CA_popest %>%      # create new dataframe
 
 This script produces a 522-line dataframe, with a separate line for each year and county.
 
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/Popest1.png?raw=true)
 
 I commented each line of this script using a hash mark (#). You can comment scripts as much (or as little) as you want. Just remember -- you may be going back to your script months later and wondering "What was I thinking when I wrote this?" Your comments, preceded by a hash (#) mark will be valuable clues. I use old scripts for two reasons. The first is to recycle old data for new stories. The second and by far the more important is to tweak the code for some new and unexpected use. Think of the data that the code produces as bricks that you can tear down and reuse a limited number of times and code as tools that you can employ over and over and over again in an endless combination of ways. The more you use the code, the more ways you will think of using it.
 
