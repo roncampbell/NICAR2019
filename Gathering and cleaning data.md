@@ -48,14 +48,14 @@ To create a script in R Studio, click on the green "+" button at the upper left 
 
 Here's the code for summarizing population change by county by decade. 
 
-library(tidyverse)              # make sure tidyverse is on
+<code>library(tidyverse)              # make sure tidyverse is on
 CA_popsum <- CA_popest %>%      # create new dataframe
   group_by(county, year) %>%    # grouping variables
   filter(year == 1970 | year == 1980 | year == 1990 | year == 2000 | 
            year == 2010 | year == 2020 | year == 2030 | year == 2040 | 
            year == 2050) %>%    # once-a-decade data
   summarise(
-    Population = sum(pop_total, na.rm=T)) # get population for each year
+  Population = sum(pop_total, na.rm=T)) # get population for each year</code>
     
 I commented each line of this script using a hash mark (#). You can comment scripts as much (or as little) as you want. Just remember -- you may be going back to your script months later and wondering "What was I thinking when I wrote this?" Your comments, preceded by a hash (#) mark will be valuable clues. I use old scripts for two reasons. The first is to recycle old data for new stories. The second and by far the more important is to tweak the code for some new and unexpected use. Think of the data that the code produces as bricks that you can tear down and reuse a limited number of times and code as tools that you can employ over and over and over again in an endless combination of ways. The more you use the code, the more ways you will think of using it.
 
@@ -63,7 +63,7 @@ This script produces a 522-line dataframe. The data would make more sense if eac
 
 Here's an example: On line 1 of CA_popsum the key is 1970 and the value is 1072985; these two values are associated with each other (and with ALAMEDA). We'll make a new dataframe built of key:value frames like this.
 
-library(tidyverse)
+<code>library(tidyverse)
 ca_popsum1 <- ca_popsum %>% 
-  spread(key=year, value=Population)
+  spread(key=year, value=Population)</code>
   
