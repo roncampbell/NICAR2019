@@ -40,3 +40,30 @@ This command creates a new field, FIPS (all caps), based on the existing field f
 
 > <code>CA_popest <- CA_popest[,c(8,1,2:7)]</code>
 
+A reminder: Whenever you see numbers in R inside square brackets, separated by a comma, they refer to rows and columns; rows are to the left of the comma, columns to the right. In the code above, we move column 8 in front of column 1 while doing nothing to the rows. We use the "c()" to indicate we're combining or concatenating several objects.
+
+We have a wealth of information here. If you're say, a school district administrator in Calaveras County, you can use this data to see how many 5-year-old children to expect in your kindergarten classes in 2025. But for most people this is too much of a good thing. We need to summmarize. We also want to be able to document our work. We can do both with a script.
+
+To create a script in R Studio, click on the green "+" button at the upper left corner of the screen and then click on the words "R Script". I usually begin a script by listing the packages needed for that script; this way I can run the script independently of any other work I am doing. To stay organized, I usually keep a project in a folder or a set of folders on my computer; all the R scripts go in a subdirectory called, naturally, Scripts. 
+
+Here's the code for summarizing population change by county by decade. 
+
+library(tidyverse)              # make sure tidyverse is on
+CA_popsum <- CA_popest %>%      # create new dataframe
+  group_by(county, year) %>%    # grouping variables
+  filter(year == 1970 | year == 1980 | year == 1990 | year == 2000 | 
+           year == 2010 | year == 2020 | year == 2030 | year == 2040 | 
+           year == 2050) %>%    # once-a-decade data
+  summarise(
+    Population = sum(pop_total, na.rm=T)) # get population for each year
+    
+I commented each line of this script using a hash mark (#). You can comment scripts as much (or as little) as you want. Just remember -- you may be going back to your script months later and wondering "What was I thinking when I wrote this?" Your comments, preceded by a hash (#) mark will be valuable clues. I use old scripts for two reasons. The first is to recycle old data for new stories. The second and by far the more important is to tweak the code for some new and unexpected use. Think of the data that the code produces as bricks that you can tear down and reuse a limited number of times and code as tools that you can employ over and over and over again in an endless combination of ways. The more you use the code, the more ways you will think of using it.
+
+This script produces a 522-line dataframe. The data would make more sense if each year were in its own column. We can do this with the tidyverse package tidyr. This package has two main functions, gather() and spread(). The former takes wide tables and makes them long; the latter takes long tables and makes them wide. They both work by using key:value pairs. 
+
+Here's an example: On line 1 of CA_popsum the key is 1970 and the value is 1072985; these two values are associated with each other (and with ALAMEDA). We'll make a new dataframe built of key:value frames like this.
+
+library(tidyverse)
+ca_popsum1 <- ca_popsum %>% 
+  spread(key=year, value=Population)
+  
