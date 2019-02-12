@@ -102,7 +102,7 @@ geom_bar(stat="identity") +
 labs(title="California population growth, 1970-2020, 5 largest counties",
                                             caption="Source: State Department of Finance")</code>
   
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/Big5Counties.png?raw=true)
 
 
 There are in descending order, you'll see that the top five counties each are larger than many states; together they comprise more than half of California's population. California's growth has slowed over time and the growth center has shifted from the coast to inland counties. We can see that by calculating the percentage change for each decade from 1970 through 2020 (where we have a very good estimate of the projected population). But another problem creeps: Most of the column headers are numbers -- not something reasonable like "Y1970" but simply 1970. R doesn't like numbers as variables.
