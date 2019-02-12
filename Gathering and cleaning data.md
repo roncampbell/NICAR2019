@@ -69,12 +69,55 @@ I commented each line of this script using a hash mark (#). You can comment scri
 
 Now think about the format of this dataframe. We've summarized it, but it's still very hard to use. The data would make more sense if each year were in its own column. We can do this with the tidyverse package tidyr. This package has two main functions, gather() and spread(). The former takes wide tables and makes them long; the latter takes long tables and makes them wide. They both work by using key:value pairs. 
 
-Here's an example: On line 1 of CA_popsum the key is 1970 and the value is 1072985; these two values are associated with each other (and with ALAMEDA). We'll make a new dataframe built of key:value frames like this.
+Here's an example: On line 1 of CA_popsum the key is 1970 and the value is 1072985; these two values are associated with each other (and with ALAMEDA). We'll make a new dataframe built of key:value pairs like this.
 
 <code>library(tidyverse)
   
-ca_popsum1 <- ca_popsum %>% 
+CA_popsum1 <- CA_popsum %>% 
 
   spread(key=year, value=Population)</code>
   
+The result is a dataframe with 58 rows -- one for each county -- and 10 columns, the lefthand column for county names and the remaining nine for the decadal years from 1970 through 2050. 
+  
 ![](https://github.com/roncampbell/NICAR2019/blob/images/Popest2.png?raw=true)
+
+In this format it's easy to measure year-by-year and county-by-county population changes for all 58 counties. But there are better ways to grasp the changes transforming California. Click on the 2020 column: Click once and you'll see more than 20 counties with fewer than 100,000 residents each; click a second time so the column is in descending order and you'll see 10 counties with more than 1 million residents each. The top five counties account for more than half of California's population.
+
+We can discover a lot about California (and learn some R in the process) just by focusing on the growth of those five big counties over the past five decades. To get there, we'll filter the CA_popsum dataframe for the top five counties -- Los Angeles, San Diego, Orange, Riverside and San Bernardino -- and use the counterpart to tidyr's spread() function, gather(), to create new Year and Population columns. Since the year columns are numeric, a troublesome issue for R that can trigger errors, we'll refer to those columns by their index numbers.
+
+<code>library(tidyverse)
+CA_top5 <- CA_popsum1 %>% 
+  filter(county %in% c("LOS ANGELES", "SAN DIEGO", "ORANGE", "RIVERSIDE", 
+                       "SAN BERNARDINO")) %>% 
+  gather(key=Year, value=Population, c(2:10))</code>
+
+We get a 45-line, 3-column dataframe that's ideal for charting.
+
+![]()
+
+There are in descending order, you'll see that the top five counties each are larger than many states; together they comprise more than half of California's population. California's growth has slowed over time and the growth center has shifted from the coast to inland counties. We can see that by calculating the percentage change for each decade from 1970 through 2020 (where we have a very good estimate of the projected population). But another problem creeps: Most of the column headers are numbers -- not something reasonable like "Y1970" but simply 1970. R doesn't like numbers as variables.
+
+The janitor package, which we encountered in the previous class, can fix that. But there's an alternative. We can enclose them with backticks, which you'll find near the upper lefthand corner of the keyboard, next to the 1 / ! key; it's the lower-case to the upper-case tilde (~). With that, here's a script to calculate population changes by decade for every California county, while taking care of those messy column headers.
+
+<code>library(tidyverse)
+CA_popchange <- CA_popsum1 %>% 
+  mutate(
+    Ch70_80 = ((`1980` - `1970`) / `1970`) * 100,
+    Ch80_90 = ((`1990` - `1980`) / `1980`) * 100,
+    Ch90_00 = ((`2000` - `1990`) / `1990`) * 100,
+    Ch00_10 = ((`2010` - `2000`) / `2000`) * 100,
+  Ch10_20 = ((`2020` - `2010`) / `2010`) * 100)  # note backticks for years</code>
+  
+With these new columns we can look for long-term changes in the state's population growth. Since most of that growth has occurred in a handful of counties, we'll use the dplyr filter() command to choose particular counties and the select() command to choose columns. We'll also arrange our selection to see the counties that grew the fastest since 2010.
+
+<code>library(tidyverse)
+Pattern <- CA_popchange %>% 
+  select(county, `1970`, `2010`, Ch70_80, Ch80_90, Ch90_00, Ch00_10, Ch10_20) %>% 
+  filter(county %in% c("LOS ANGELES", "SAN DIEGO", "ORANGE", "SANTA CLARA",
+                       "RIVERSIDE", "SAN BERNARDINO", "FRESNO", "KERN", 
+                       "SACRAMENTO", "SAN JOAQUIN")) %>% 
+  arrange(desc(Ch10_20))</code>
+  
+  
+
+
