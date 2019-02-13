@@ -292,10 +292,7 @@ It takes a continuous variable, in this case GIS_ACRES, and then a categorical v
 
 Here are the first few lines of the result:
 
-                        CAUSE  GIS_ACRES
-1               1 - Lightning 1448994.26
-2                10 - Vehicle   83581.41
-3 14 - Unknown / Unidentified  198298.73
+![]()
 
 Now let's chart acres burned by cause by year. We can do that with a stacked bar chart. In this chart, we use YEAR as the x or categorical variable, GIS_ACRES as the y or continuous variable, and then we do something new: We use CAUSE as the fill for the bars.
 
