@@ -121,6 +121,7 @@ One problem becomes apparent when we look at the FL_DATE column and is confirmed
 When you come right down to it, data journalists are janitors with college degrees. We spend two-thirds or three-quarters of our time with a digital mop and broom. The tidyverse package lubridate is really handy for cleaning up messes that involve dates and times. One of its many functions converts variously formatted strings into dates. We'll use that function to create a standard date column and then move it next to the old FL_DATE column. (Remember, we activated lubridate at the start of class.)
 
 > AirDelays$FL_Date1 <- mdy(AirDelays$FL_DATE)
+
 > AirDelays <- AirDelays[,c(1:2,34,3:33)]
 
 
