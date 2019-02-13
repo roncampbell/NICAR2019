@@ -108,7 +108,15 @@ labs(title="California population growth, 1970-2020, 5 largest counties",
   
 ![](https://github.com/roncampbell/NICAR2019/blob/images/Big5Counties.png?raw=true)
 
-With a little time and effort, you can produce much better graphics in ggplot. I strongly recommend the <code>RColorBrewer</code> package for color selections. It gives you much better control over color than the R defaults.
+With a little time and effort, you can produce much more appealing graphics in ggplot. I strongly recommend the <code>RColorBrewer</code> package for color selections. It gives you much better control over color than the R defaults.
+
+Now for a change of pace: Most NICAR Conference attendees flew here via Los Angeles International (LAX) or John Wayne Airport (SNA). Perhaps your flight was delayed. And yes, there is data for that! The U.S. Transportation Department's Bureau of Transportation Statistics maintains records of all domestic airline flights at [https://www.transtats.bts.gov/DataIndex.asp]. I downloaded the October 2018 Airline On-Time Performance Data and prepared a 10% random sample for this class. I also downloaded several reference tables.
+
+> AirDelays <- read_csv("OnTime_201810a.csv")
+
+One problem becomes apparent when we look at the FL_DATE column and is confirmed when we run the str() command. The column, which contains flight dates, is formatted as characters. We can't do any analysis involving dates until we change this column.
+
+![]()
 
 
 
