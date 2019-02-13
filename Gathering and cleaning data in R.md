@@ -110,7 +110,7 @@ labs(title="California population growth, 1970-2020, 5 largest counties",
 
 With a little time and effort, you can produce much more appealing graphics in ggplot. I strongly recommend the <code>RColorBrewer</code> package for color selections. It gives you much better control over color than the R defaults.
 
-Now for a change of pace: Most NICAR Conference attendees flew here via Los Angeles International (LAX) or John Wayne Airport (SNA). Perhaps your flight was delayed. And yes, there is data for that! The U.S. Transportation Department's Bureau of Transportation Statistics maintains records of all domestic airline flights at [https://www.transtats.bts.gov/DataIndex.asp]. I downloaded the October 2018 Airline On-Time Performance Data and prepared a 10% random sample for this class. I also downloaded several reference tables.
+Now for a change of pace: Most NICAR Conference attendees arrived here via airline. Maybe your flight was delayed. And yes, there is data for that! The U.S. Transportation Department's Bureau of Transportation Statistics maintains records of all domestic airline flights at [https://www.transtats.bts.gov/DataIndex.asp]. I downloaded the October 2018 Airline On-Time Performance Data and prepared a 10% random sample for this class. I also downloaded several reference tables.
 
 > AirDelays <- read_csv("OnTime_201810a.csv")
 
@@ -118,13 +118,26 @@ One problem becomes apparent when we look at the FL_DATE column and is confirmed
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/flights1.png?raw=true)
 
-When you come right down to it, data journalists are janitors with college degrees. We spend two-thirds or three-quarters of our time with a digital mop and broom. The tidyverse package lubridate is really handy for cleaning up messes that involve dates and times. One of its many functions converts variously formatted strings into dates. We'll use that function to create a standard date column and then move it next to the old FL_DATE column. (Remember, we activated lubridate at the start of class.)
+When you come right down to it, data journalists are janitors with college degrees. We spend two-thirds or three-quarters of our time with a digital mop and broom. The tidyverse package lubridate is really handy for cleaning up messy dates and times. One of its many functions converts variously formatted strings into dates. We'll use that function to create a standard date column and then move it next to the old FL_DATE column. (Remember, we activated lubridate at the start of class.)
 
 > AirDelays$FL_Date1 <- mdy(AirDelays$FL_DATE)
 
 > AirDelays <- AirDelays[,c(1:2,34,3:33)]
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/flights2.png?raw=true)
+
+The dataframe is awash in codes -- carrier, airport (both origin and destination), even the day of the week! Fortunately we have translation tables to help out. We also have some experience to help us. I learned when working with this data a year or so ago that when a flight departs late by industry standards (15+ minutes over schedule), it typically arrives late too. So for this class we'll focus on delays at origin (departure) airports and ignore destination (arrival) airports.
+
+First we'll import the airports file into R.
+
+> Airports <- read_csv("AIRPORT.csv")
+
+There are 6,510 airports in this dataframe. We want to know how bad flight delays are for people in the greater NICAR Conference region, and there are just four airports in NICAR Land: Los Angeles International (LAX), Long Beach Airport (LGB), John Wayne Airport (SNA) and San Diego International (SAN). We can fetch them by filtering for the three-character codes.
+
+> <code>SoCalAirports <- Airports %>% 
+  +     filter(Code %in% c("LAX", "LGB", "SNA", "SAN"))</code>
+
+![]()
 
 
 
