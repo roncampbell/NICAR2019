@@ -137,7 +137,7 @@ There are 6,510 airports in this dataframe. We want to know how bad flight delay
 > <code>SoCalAirports <- Airports %>% 
   +     filter(Code %in% c("LAX", "LGB", "SNA", "SAN"))</code>
 
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/SoCalAirports.png?raw=true)
 
 
 
