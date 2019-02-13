@@ -158,10 +158,15 @@ So far we've analyzed Orange County immigration and household income by census t
 The resulting dataframe contains two duplicate columns -- Geography.x and Geography.y. We can solve that problem easily by eliminating the duplicate and renaming the other, first making sure we've got the right columns.
 
 > <code>colnames(OC_ResInc)[19]
+ 
 [1] "Geography.y"
+ 
 > OC_ResInc[19] <- NULL
+
 > colnames(OC_ResInc)[3]
+
 [1] "Geography.x"
+
  > colnames(OC_ResInc)[3] <- "Geography"</code>
 
 Let's first see if there's a correlation between median household income and the percentage of immigrants in OC tracts. When doing correlation - in fact with many statistical procedures - you must beware of NA values. So we'll throw in a bit of code to ward off the NA beast.
