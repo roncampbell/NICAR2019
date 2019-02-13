@@ -116,7 +116,7 @@ Now for a change of pace: Most NICAR Conference attendees flew here via Los Ange
 
 One problem becomes apparent when we look at the FL_DATE column and is confirmed when we run the str() command. The column, which contains flight dates, is formatted as characters. We can't do any analysis involving dates until we change this column.
 
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/flights1.png?raw=true)
 
 
 
