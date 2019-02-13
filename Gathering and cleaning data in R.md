@@ -1,8 +1,8 @@
 # Gathering and cleaning data in R
 
-This is the third of a three-part introduction to <code>R</code>. We'll import California demographic data from the web that requires some cleaning. We'll also analyze airport flight delays that will make sense only when it is merged with other data. With a little practice, these skills will become second nature. But first let's load the R packages we'll need. The ace IRE/NICAR staff has already installed them for the conference.
+This is the third of a three-part introduction to <code>R</code>. We'll import California demographic data from the web that requires some cleaning. We'll also analyze an airport flight delay database that contains several coded fields that must be merged with other databases. With a little practice, cleaning and merging will become second nature. But first let's load the R packages we'll need. The ace IRE/NICAR staff has already installed them for the conference.
 
-(Hint: If you're not at the conference, remember that you must install packages before you can use them. To do so, make sure you have a working web connection and then type at the console prompt this command: <code>install.packages("xxx")</code> where xxx is the name of the package.)
+(Hint: If you're not at the conference, remember that you must install packages before you can use them. To do so, make sure you have a working web connection and then type this command at the console prompt: <code>install.packages("xxx")</code> where xxx (in quote marks) is the name of the package.)
 
 > library(tidyverse)
 
@@ -12,11 +12,13 @@ This is the third of a three-part introduction to <code>R</code>. We'll import C
 
 The xml2 and lubridate packages are "non-core" parts of the <code>tidyverse</code>. They are among the dozen or so elements of the tidyverse that must be individually activated. Core elements like <code>ggplot</code>, <code>dplyr</code>, <code>tidyr</code> and <code>stringr</code> are activated with the single command <code>library(tidyverse)</code>.
 
-The California Department of Finance tracks demographic trends using census, birth and death records to project population trends. We'll import a file that covers all 58 counties from 1970 through 2050.
+The California Department of Finance tracks demographic trends using census, birth and death records to project population trends. We'll import a file that estimates the population in all 58 counties from 1970 through 2050.
 
 > <code>download_html("http://tinyurl.com/y82z52uw", "ca_popest.csv")</code>
 
-This XML2 command does three things. It tells R to download some HTML; it directs the browser to a particular website; and it downloads the content to a local file, to which we give a name. 
+This XML2 command does three things. It tells R to download some HTML; it directs the browser to a particular website; and it downloads the content to a local file, to which it assigns a name. 
+
+Next we use the tidyverse read_csv function to do just that, read the comma-separated variable file we just imported.
 
 > <code>CA_popest <- read_csv("ca_popest.csv")
 Parsed with column specification:
@@ -32,13 +34,13 @@ cols(
   
 > View(CA_popest) 
 
-The dataframe contains 474,125 rows and has 7 columns. If you're familiar with FIPS codes, you'll immediately notice a problem with the (lower-case) fips column in CA_popest. The FIPS code for California is "06", but it appears here without the leading zero. This is a potential problem if we want to merge the data or map it. 
+The dataframe contains 474,125 rows and has 7 columns. If you're familiar with FIPS codes, you'll immediately notice a problem with the (lower-case) fips column in CA_popest. The FIPS code for California is "06", but this one lacks the leading zero. It's a big problem if we want to merge the data or map it. 
 
-Fortunately it's easy to solve with the core tidyverse package stringr, which manipulates strings. The current fips field is 4 characters wide and lacks a leading zero. The field should be 5 characters wide (2 characters to identify the state, 3 to identify the county). Since the state is California in all cases, the first two characters should be "06"; we know from sorting the field in ascending and descending order that every row begins with a "6". All we need to do is widen the field from four characters to five and place an "0" in the first position, before the "6". 
+Fortunately it's easy to solve with the core tidyverse package stringr, which manipulates strings. The current fips field is 4 characters wide and lacks a leading zero. The new field should be 5 characters wide (2 characters to identify the state, 3 to identify the county). All records are in California; we know this because when we sort the fips field in both ascending and descending order, the first character is always "6". All we need to do in the new field, after making it one character wider than the old field, is place an "0" in the first position, before the "6". 
 
 > CA_popest$FIPS <- str_pad(CA_popest$fips, 5, "left", pad = "0")
 
-This command creates a new field, FIPS (all caps), based on the existing field fips (lower case); it's 5 characters wide, padded on the left with the character "0". If you use the command View(CA_popest), you'll see the new field at the far right of the dataframe. Now all we have to do is move it to the left, where it will be more convenient. We can do that with column indexing.
+This command creates a new field, FIPS (all caps), based on the existing field fips (lower case); it's 5 characters wide, padded on the left with the character "0". If you use the command View(CA_popest), you'll see the new field at the far right of the dataframe. The next step is to move it to the left, where it will be more convenient. We can do that with column indexing.
 
 > <code>CA_popest <- CA_popest[,c(8,1,2:7)]</code>
 
@@ -46,11 +48,11 @@ A reminder: Whenever you see numbers in R inside square brackets, separated by a
 
 We have a wealth of information here. If you're say, a school district administrator in Calaveras County, you can use this data to see how many 5-year-old children to expect in your kindergarten classes in 2025. But for most people this is too much of a good thing. We need to summmarize. We also want to be able to document our work. We can do both with a script.
 
-To create a script in R Studio, click on the green "+" button at the upper left corner of the screen and then click on the words "R Script". I usually begin a script by listing the packages needed for that script; this way I can run the script independently of any other work I am doing. To stay organized, I usually keep a project in a folder or a set of folders on my computer; all the R scripts go in a subdirectory called, naturally, Scripts. 
+To create a script in R Studio, click on the green "+" button at the upper left corner of the screen and then click on the words "R Script". I usually begin a script by listing the packages needed for that script; this way I can run the script independently of any other work I am doing. To stay organized, I usually keep all the information for a project together in a folder or a set of folders on my computer; all the R scripts go in a subdirectory called, naturally, Scripts. 
 
 Here's the code for summarizing population change by county by decade. 
 
-<code>library(tidyverse)              # make sure tidyverse is on
+<code>library(tidyverse)        # make sure tidyverse is on
   
 CA_popsum <- CA_popest %>%      # create new dataframe
 
@@ -67,7 +69,7 @@ This script produces a 522-line dataframe, with a separate line for each year an
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/Popest1.png?raw=true)
 
-I commented each line of this script using a hash mark (#). You can comment scripts as much (or as little) as you want. Just remember -- you may be going back to your script months later and wondering "What was I thinking when I wrote this?" Your comments, preceded by a hash (#) mark will be valuable clues. I use old scripts for two reasons. The first is to recycle old data for new stories. The second and by far the more important is to tweak the code for some new and unexpected use. Think of the data that the code produces as bricks that you can tear down and reuse a limited number of times and code as tools that you can employ over and over and over again in an endless combination of ways. The more you use the code, the more ways you will think of using it.
+I commented each line of this script using a hash mark (#). You can comment scripts as much (or as little) as you want. Just remember -- you may be going back to your script months later and wondering "What was I thinking when I wrote this?" Your comments will be valuable clues. I use old scripts for two reasons. The first is to recycle old data for new stories. The second and by far the more important is to tweak the code for some new and unexpected use. Think of the data that the code produces as bricks that you can tear down and reuse a limited number of times; the code is a tool that you can employ over and over and over again in endless combinations. The more you use the code, the more ways you will think of using it.
 
 Now think about the format of this dataframe. We've summarized it, but it's still very hard to use. The data would make more sense if each year were in its own column. We can do this with the tidyverse package tidyr. This package has two main functions, gather() and spread(). The former takes wide tables and makes them long; the latter takes long tables and makes them wide. They both work by using key:value pairs. 
 
@@ -85,7 +87,7 @@ The result is a dataframe with 58 rows -- one for each county -- and 10 columns,
 
 In this format it's easy to measure year-by-year and county-by-county population changes for all 58 counties. But there are better ways to grasp the changes transforming California. Click on the 2020 column: Click once and you'll see more than 20 counties with fewer than 100,000 residents each; click a second time so the column is in descending order and you'll see 10 counties with more than 1 million residents each. The top five counties account for more than half of California's population.
 
-We can discover a lot about California (and learn some R in the process) just by focusing on the growth of those five big counties over the past five decades. To get there, we'll filter the CA_popsum dataframe for the top five counties -- Los Angeles, San Diego, Orange, Riverside and San Bernardino -- and use the counterpart to tidyr's spread() function, gather(), to create new Year and Population columns. Since the year columns are numeric, a troublesome issue for R that can trigger errors, we'll refer to those columns by their index numbers.
+We can discover a lot about California (and learn some R in the process) just by focusing on the growth of those five big counties over the past five decades. To get there, we'll filter the CA_popsum dataframe for the top five counties -- Los Angeles, San Diego, Orange, Riverside and San Bernardino -- and use the counterpart to tidyr's spread() function, gather(), to create new Year and Population columns. Since the year columns are numeric, which can trigger errors in R, we'll refer to those columns by their index numbers.
 
 <code>library(tidyverse)
 CA_top5 <- CA_popsum1 %>% 
@@ -97,7 +99,7 @@ We get a 45-line, 3-column dataframe that's ideal for charting.
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/Poptest3.png?raw=true)
 
-Let's make a chart and see if there's a pattern. And since we've got estimates going out to 2050, let's limit the chart to 2020, since we're more confident of projections for that year than for 2030, 2040 and 2050.
+Let's make a chart and see if there's a pattern. And since we've got estimates going out to 2050, we'll limit the chart to 2020, since we're more confident of projections for that year than for 2030 and later.
 
 > <code>ggplot(filter(CA_top5, Year <=2020), aes(x=Year, y=Population, fill=county)) +
 geom_bar(stat="identity") +
@@ -106,31 +108,11 @@ labs(title="California population growth, 1970-2020, 5 largest counties",
   
 ![](https://github.com/roncampbell/NICAR2019/blob/images/Big5Counties.png?raw=true)
 
-I should note right away that you can do a vastly better job in ggplot with just a little time and with the aid of the RColorBrewer package for, um, more tasteful color selection. But no one ever accused me of artistic talent. 
+With a little time and effort, you can produce much better graphics in ggplot. I strongly recommend the <code>RColorBrewer</code> package for color selections. It gives you much better control over color than the R defaults.
 
-There are in descending order, you'll see that the top five counties each are larger than many states; together they comprise more than half of California's population. California's growth has slowed over time and the growth center has shifted from the coast to inland counties. We can see that by calculating the percentage change for each decade from 1970 through 2020 (where we have a very good estimate of the projected population). But another problem creeps: Most of the column headers are numbers -- not something reasonable like "Y1970" but simply 1970. R doesn't like numbers as variables.
 
-The janitor package, which we encountered in the previous class, can fix that. But there's an alternative. We can enclose them with backticks, which you'll find near the upper lefthand corner of the keyboard, next to the 1 / ! key; it's the lower-case to the upper-case tilde (~). With that, here's a script to calculate population changes by decade for every California county, while taking care of those messy column headers.
 
-<code>library(tidyverse)
-CA_popchange <- CA_popsum1 %>% 
-  mutate(
-    Ch70_80 = ((`1980` - `1970`) / `1970`) * 100,
-    Ch80_90 = ((`1990` - `1980`) / `1980`) * 100,
-    Ch90_00 = ((`2000` - `1990`) / `1990`) * 100,
-    Ch00_10 = ((`2010` - `2000`) / `2000`) * 100,
-  Ch10_20 = ((`2020` - `2010`) / `2010`) * 100)  # note backticks for years</code>
-  
-With these new columns we can look for long-term changes in the state's population growth. Since most of that growth has occurred in a handful of counties, we'll use the dplyr filter() command to choose particular counties and the select() command to choose columns. We'll also arrange our selection to see the counties that grew the fastest since 2010.
 
-<code>library(tidyverse)
-Pattern <- CA_popchange %>% 
-  select(county, `1970`, `2010`, Ch70_80, Ch80_90, Ch90_00, Ch00_10, Ch10_20) %>% 
-  filter(county %in% c("LOS ANGELES", "SAN DIEGO", "ORANGE", "SANTA CLARA",
-                       "RIVERSIDE", "SAN BERNARDINO", "FRESNO", "KERN", 
-                       "SACRAMENTO", "SAN JOAQUIN")) %>% 
-  arrange(desc(Ch10_20))</code>
-  
   
 
 
