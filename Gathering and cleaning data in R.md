@@ -124,7 +124,7 @@ When you come right down to it, data journalists are janitors with college degre
 
 > AirDelays <- AirDelays[,c(1:2,34,3:33)]
 
-
+![]()
 
 
 
