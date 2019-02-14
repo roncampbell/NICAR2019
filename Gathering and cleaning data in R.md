@@ -176,7 +176,7 @@ LateAirports <- AirDelays2 %>%
   ) %>% 
   arrange(desc(MedianTimeLate))</code>
   
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/flights3.png?raw=true)
 
 Time to rephrase the question: The DEP_DELAY field includes negative values when flights leave early and a great many 0 values when flights leave on time. Suppose we ask a two-part question: How many flights departed 1 or more minutes late, and what was the median delay for those flights? And oh yes, let's arrange cities by the number of late flights. 
 
