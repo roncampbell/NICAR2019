@@ -143,7 +143,11 @@ To get it we'll use the stringr package, part of the tidyverse toolchest. First 
 
 If you glanced at the Description field, you probably noticed a pattern: the city, followed by a comma, then the state, a colon and the name of the airport. The str_extract() function gets the name of the string and then looks for a pattern using a regular expression, regex for short. If you've never used a regex, the part in quotes above looks like something you might see in an ancient Egyptian tomb, but it's actually used quite a bit in computer science. The first symbol, a caret (^), marks the beginning of a line. The next part, (.+), refers to an unlimited number of characters. The last part, (?=:), tells the function to "look ahead" for a colon; that's the stop sign. Everything it finds before the colon goes into the new variable City.
 
-Now we'll join the two tables together and do some minor cleaning.
+This looks pretty good. But when we check the structure of AirportsNew, we find something interesting: The City column is a list, a special type of field. We need to convert it to a character string before we can work with it. We'll use sapply(), a Base R function for dealing with lists and vectors; together with its related functions, apply() and lapply(), it was used a lot before the development of the tidyverse a few years ago but still comes in handy.
+
+> AirportsNew$City <- sapply(AirportsNew$City, toString)
+
+We check AirportsNew again with the str() command to confirm that, yes, the City column is a plain-vanilla character field. We're now ready to join it to the AirDelays dataframe.
 
 > AirDelays2 <- inner_join(AirportsNew, AirDelays, by=c("Code" = "ORIGIN"))
 
@@ -158,6 +162,34 @@ We'll rename the Code column, currently in column 1, to ORIGIN.
 And now we'll reorder the columns so that ORIGIN and City appear next to DEST.
 
 > AirDelays2 <- AirDelays2[,c(3:8,1:2,9:35)]
+
+Let's talk about the word "late" for a moment. Mere passengers think it means that the airliner has missed the official schedule. But what do we know? We paid money to get squeezed into a metal cigar tube with total strangers for several hours. The airline industry and the federal government define "late" another way: An airliner is "late" when it departs or arrives at least 15 minutes after the scheduled time. Fortunately, the data allows us to use both definitions. The passenger's definition is captured in the column DEP_DELAY; the industry's in the column DEP_DEL15 (0=="NO", 1=="YES").
+
+Now that we have originating cities, let's write a script to find the median departure delays from each city and arrange them in descending order.
+
+<code>library(tidyverse)
+LateAirports <- AirDelays2 %>% 
+  group_by(City) %>% 
+  summarise(
+    DepartingFlights = n(),
+    MedianTimeLate = median(DEP_DELAY, na.rm=T)
+  ) %>% 
+  arrange(desc(MedianTimeLate))</code>
+  
+![]()
+
+Time to rephrase the question: The DEP_DELAY field includes negative values when flights leave early and a great many 0 values when flights leave on time. Suppose we ask a two-part question: How many flights departed 1 or more minutes late, and what was the median delay for those flights? And oh yes, let's arrange cities by the number of late flights. 
+
+<code>library(tidyverse)
+LateAirports <- AirDelays2 %>%
+  filter(DEP_DELAY > 0) %>% 
+  group_by(City) %>% 
+  summarise(
+    LateFlights = n(),
+    MedianTimeLate = median(DEP_DELAY, na.rm=T)) %>% 
+  arrange(desc(LateFlights))</code>
+  
+![]()
 
 
 
