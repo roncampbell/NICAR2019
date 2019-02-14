@@ -22,12 +22,12 @@ Dozens of books and hundreds, perhaps thousands of articles discuss R. Here are 
 
 ## Reference
 
-<code>stackoverflow - advice for the R-lorn</code>If all else fails, go here. Google your error message or go to 
-[https://stackoverflow.com/questions/tagged/r] and look around. More than 270,000 questions asked. So far.
+<code>stackoverflow - advice for the R-lorn</code>If all else fails, go here. Google your error message or go to [https://stackoverflow.com/questions/tagged/r](https://stackoverflow.com/questions/tagged/r)
+and look around. More than 270,000 questions asked. So far.
 
 <code>Rstats</code>More formally @rstatstweet. Yeah, we're getting down in the weeds here, but you can learn about new R packages (thousands and thousands every year!) and other neat stuff.
 
 <code>Google's R Style Guide</code>In the Old Days (the 1990's), every reporter had a copy of the Associated Press Style Guide on their
-desk. R nerds need a style guide too. Here it is: [https://google.github.io/styleguide/Rguide.xml]
+desk. R nerds need a style guide too. Here it is: [https://google.github.io/styleguide/Rguide.xml](https://google.github.io/styleguide/Rguide.xml)
 
-<code>The tidyverse style guide</code> Yes, there's a style guide for the tidyverse too, written of course by Hadley Wickham [https://style.tidyverse.org/_main.pdf]
+<code>The tidyverse style guide</code> Yes, there's a style guide for the tidyverse too, written of course by Hadley Wickham [https://style.tidyverse.org/_main.pdf](https://style.tidyverse.org/_main.pdf)
