@@ -10,7 +10,7 @@ Dozens of books and hundreds, perhaps thousands of articles discuss R. Here are 
 
 <code>Practical Statistics for Data Scientists</code> by Peter Bruce & Andrew Bruce (O'Reilly, 2017), 284 pages. R was developed as statistical software. This book will help you deal with some of the many stats that R throws at you.
 
-<code>R for Journalists</code> by Andrew Ba Tran. This isn't a book; it's a seven-part online course, originally sponsored by the Knight Center and posted at [](learn.r-journalism.com/en/). Carve out time; even experienced R users will learn something here.
+<code>R for Journalists</code> by Andrew Ba Tran. This isn't a book; it's a seven-part online course, originally sponsored by the Knight Center and posted at [learn.r-journalism.com/en/](learn.r-journalism.com/en/). Carve out time; even experienced R users will learn something here.
 
 ## Graphics and mapping
 
