@@ -1,6 +1,6 @@
 # Gathering and cleaning data in R
 
-This is the third of a three-part introduction to <code>R</code>. We'll import California demographic data from the web that requires some cleaning. We'll also analyze an airport flight delay database that contains several coded fields that must be merged with other databases. With a little practice, cleaning and merging will become second nature. But first let's load the R packages we'll need. The ace IRE/NICAR staff has already installed them for the conference.
+This is the third part of a three-part introduction to <code>R</code>. We'll import California demographic data from the web that requires some cleaning. We'll also analyze an airport flight delay database that contains several coded fields that must be merged with other databases. With a little practice, cleaning and merging will become second nature. But first let's load the R packages we'll need. The ace IRE/NICAR staff has already installed them for the conference.
 
 (Hint: If you're not at the conference, remember that you must install packages before you can use them. To do so, make sure you have a working web connection and then type this command at the console prompt: <code>install.packages("xxx")</code> where xxx (in quote marks) is the name of the package.)
 
