@@ -132,7 +132,36 @@ First we'll import the airports file into R.
 
 > Airports <- read_csv("AIRPORT.csv")
 
-There are 6,510 airports in this dataframe. We want to know how bad flight delays are for people in the greater NICAR Conference region, and there are just four airports in NICAR Land: Los Angeles International (LAX), Long Beach Airport (LGB), John Wayne Airport (SNA) and San Diego International (SAN). We can fetch them by filtering for the three-character codes.
+There are 6,510 airports in this dataframe. They are all identified by three-character codes. You probably know the code for your own city and a few other places that you frequent. But not many of us can name more than a dozen or two. We can easily join the Airports and AirDelays dataframes; but as you may have noticed, the "Descriptions" field in the Airports table is really long. We just want the city and state.
+
+To get it we'll use the stringr package, part of the tidyverse toolchest. First we'll make a copy of the Airports dataframe, AirportsNew. Then we'll carve out the City field from the Description field using stringr.
+
+> AirportsNew <- Airports
+
+> <code>AirportsNew$City <- str_extract_all(string = AirportsNew$Description,
+                            pattern = "^(.+)(?=:)")</code>
+
+If you glanced at the Description field, you probably noticed a pattern: the city, followed by a comma, then the state, a colon and the name of the airport. The str_extract() function gets the name of the string and then looks for a pattern using a regular expression, regex for short. If you've never used a regex, the part in quotes above looks like something you might see in an ancient Egyptian tomb, but it's actually used quite a bit in computer science. The first symbol, a caret (^), marks the beginning of a line. The next part, (.+), refers to an unlimited number of characters. The last part, (?=:), tells the function to "look ahead" for a colon; that's the stop sign. Everything it finds before the colon goes into the new variable City.
+
+Now we'll join the two tables together and do some minor cleaning.
+
+> AirDelays2 <- inner_join(AirportsNew, AirDelays, by=c("Code" = "ORIGIN"))
+
+We don't need the Description column, currently in column 2 of the new table, so out it goes.
+
+> AirDelays2[2] <- NULL
+
+We'll rename the Code column, currently in column 1, to ORIGIN.
+
+> colnames(AirDelays2)[1] <- "ORIGIN"
+
+And now we'll reorder the columns so that ORIGIN and City appear next to DEST.
+
+> AirDelays2 <- AirDelays2[,c(3:8,1:2,9:35)]
+
+
+
+We want to know how bad flight delays are for people in the greater NICAR Conference region, and there are just four airports in NICAR Land: Los Angeles International (LAX), Long Beach Airport (LGB), John Wayne Airport (SNA) and San Diego International (SAN). We can fetch them by filtering for the three-character codes.
 
 > <code>SoCalAirports <- Airports %>% 
   +     filter(Code %in% c("LAX", "LGB", "SNA", "SAN"))</code>
