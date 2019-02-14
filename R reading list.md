@@ -12,8 +12,6 @@ Dozens of books and hundreds, perhaps thousands of articles discuss R. Here are 
 
 <code>R for Journalists</code> by Andrew Ba Tran. This isn't a book; it's a seven-part online course, originally sponsored by the Knight Center and posted at [learn.r-journalism.com/en/] Carve out time; even experienced R users will learn something here.
 
-<code>Rstats</code>More formally @rstatstweet. Yeah, we're getting down in the weeds here, but you can learn about new R packages (thousands and thousands every year!) and other neat stuff.
-
 ## Graphics and mapping
 
 <code>R Graphics Cookbook</code> by Winston Chang (O'Reilly, 2013), 382 pages. A great introduction to R graphics, including ggplot.
@@ -26,6 +24,8 @@ Dozens of books and hundreds, perhaps thousands of articles discuss R. Here are 
 
 <code>stackoverflow - advice for the R-lorn</code>If all else fails, go here. Google your error message or go to 
 [https://stackoverflow.com/questions/tagged/r] and look around. More than 270,000 questions asked. So far.
+
+<code>Rstats</code>More formally @rstatstweet. Yeah, we're getting down in the weeds here, but you can learn about new R packages (thousands and thousands every year!) and other neat stuff.
 
 <code>Google's R Style Guide</code>In the Old Days (the 1990's), every reporter had a copy of the Associated Press Style Guide on their
 desk. R nerds need a style guide too. Here it is: [https://google.github.io/styleguide/Rguide.xml]
