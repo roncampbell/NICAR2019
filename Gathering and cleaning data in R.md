@@ -189,7 +189,7 @@ LateAirports <- AirDelays2 %>%
     MedianTimeLate = median(DEP_DELAY, na.rm=T)) %>% 
   arrange(desc(LateFlights))</code>
   
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/flights4.png?raw=true)
 
 
 
