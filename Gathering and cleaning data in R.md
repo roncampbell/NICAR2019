@@ -191,7 +191,7 @@ LateAirports <- AirDelays2 %>%
   
 ![](https://github.com/roncampbell/NICAR2019/blob/images/flights4.png?raw=true)
 
-This opens a lot of possibilities. You probably noticed the column OP_UNIQUE_CARRIER. We have a translation table that will help us figure out which "unique carriers" -- in other words, major airlines -- had the most late flights. But let's try something more challenging. After all, your editor or news director isn't breathing down your neck right this second, so you can take a few minutes to learn new skills!
+This opens a lot of possibilities. You probably noticed the column OP_UNIQUE_CARRIER. We have a translation table that will help us figure out which "unique carriers" -- in other words, major airlines -- had the most late flights. But let's try something more challenging: the hour or hours with the most delayed flights. After all, your editor or news director isn't breathing down your neck right this second, so you can take a few minutes to learn new skills!
 
 There are two columns that list departure times: CRS_DEP_TIME, the departure time according to the official schedule, and DEP_TIME, the actual departure time. Since we're interested in flights that departed late, we'll focus on the official departure time. The first thing to notice is that the CRS_DEP_TIME field is numeric when it should be a time field; we need to fix that. 
 
@@ -209,9 +209,26 @@ We get a funky date and a solid time.
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/flights5.png?raw=true)
 
+Now we'll apply the lubridate function hour() to CRS_DEP_TIME to make a new field, CRS_DEP_Hour.
 
+> AirDelays2$CRS_Dep_Hour <- hour(AirDelays2$CRS_DEP_TIME)
 
+One of the nice things about R is that we can recycle our code. We can copy most of the code from the last script, LateAirports, into the next script, make a few tweaks, and identify the hours with the most late flights.
 
+<code>library(tidyverse)
+LateHours <- AirDelays2 %>%
+  filter(DEP_DELAY > 0) %>% 
+  group_by(CRS_Dep_Hour) %>% 
+  summarise(
+    LateFlights = n(),
+    MedianTimeLate = median(DEP_DELAY, na.rm=T)) %>% 
+  arrange(desc(LateFlights))</code>
   
+![]()
 
+Let's graph this to see what it looks like.
+
+![]()
+  
+Late flights peak around 5 pm each evening. If you thought your commute home was bad, stay away from the airport!
 
