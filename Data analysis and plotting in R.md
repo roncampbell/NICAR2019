@@ -240,7 +240,7 @@ The graph makes clear that there are thousands of relatively small fires and a h
        
 Both tools show that the typical wildfire is small, with a median size of around 512 acres and a mean (mathematical average) of 2,817 acres. But notice that very high standard deviation -- 11,611 acres. That's the tell, the sign that the mean is, uh, meaningless.
 
-Perhaps there's a historical pattern. We have nearly data for nearly 12,000 fires going back more than a century. Maybe we can see something if we break them down by decade instead of by year. To do that, we again will use dplyr's mutate tool. We'll also use something most of us non-math majors never encountered, the modulus, or remainder from division. 
+Perhaps there's a historical pattern. We have data for nearly 12,000 fires going back more than a century. Maybe we can see something if we break them down by decade instead of by year. To do that, we again will use dplyr's mutate tool. We'll also use something most of us non-math majors never encountered, the modulus, or remainder from division. 
 
 > <code>Wildfires <- Wildfires %>% 
 mutate(
