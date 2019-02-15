@@ -12,7 +12,7 @@ This is the third part of a three-part introduction to <code>R</code>. We'll imp
 
 The xml2 and lubridate packages are "non-core" parts of the <code>tidyverse</code>. They are among the dozen or so elements of the tidyverse that must be individually activated. Core elements like <code>ggplot</code>, <code>dplyr</code>, <code>tidyr</code> and <code>stringr</code> are activated with the single command <code>library(tidyverse)</code>.
 
-The California Department of Finance tracks demographic trends using census, birth and death records to project population trends. We'll import a file that estimates the population in all 58 counties from 1970 through 2050.
+The California Department of Finance tracks demographic trends using census, birth and death records. We'll import a file that estimates the population in all 58 counties from 1970 through 2050.
 
 > <code>download_html("http://tinyurl.com/y82z52uw", "ca_popest.csv")</code>
 
