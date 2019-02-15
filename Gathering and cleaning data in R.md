@@ -110,7 +110,7 @@ labs(title="California population growth, 1970-2020, 5 largest counties",
 
 With a little time and effort, you can produce much more appealing graphics in ggplot. I strongly recommend the <code>RColorBrewer</code> package for color selections. It gives you much better control over color than the R defaults.
 
-Now for a change of pace: Most NICAR Conference attendees arrived here via airline. Maybe your flight was delayed. And yes, there is data for that! The U.S. Transportation Department's Bureau of Transportation Statistics maintains records of all domestic airline flights at [https://www.transtats.bts.gov/DataIndex.asp]. I downloaded the October 2018 Airline On-Time Performance Data and prepared a 10% random sample for this class. I also downloaded several reference tables.
+Now for a change of pace: Most NICAR Conference attendees arrived here via airline. Maybe your flight was delayed. And yes, there is data for that! The U.S. Transportation Department's Bureau of Transportation Statistics maintains records of all domestic airline flights at [https://www.transtats.bts.gov/DataIndex.asp](https://www.transtats.bts.gov/DataIndex.asp). I downloaded the October 2018 Airline On-Time Performance Data and prepared a 10% random sample for this class. I also downloaded several reference tables.
 
 > AirDelays <- read_csv("OnTime_201810a.csv")
 
@@ -126,28 +126,28 @@ When you come right down to it, data journalists are janitors with college degre
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/flights2.png?raw=true)
 
-The dataframe is awash in codes -- carrier, airport (both origin and destination), even the day of the week! Fortunately we have translation tables to help out. We also have some experience to help us. I learned when working with this data a year or so ago that when a flight departs late by industry standards (15+ minutes over schedule), it typically arrives late too. So for this class we'll focus on delays at origin (departure) airports and ignore destination (arrival) airports.
+The AirDelays dataframe is awash in codes -- carrier, airport (both origin and destination), even the day of the week! Fortunately we have translation tables to help out. We also have some experience to guide us. I learned when working with this data a year or so ago that when a flight departs late by industry standards (15+ minutes over schedule), it typically arrives late too. So for this class we'll focus on delays at origin (departure) airports and ignore destination (arrival) airports.
 
 First we'll import the airports file into R.
 
 > Airports <- read_csv("AIRPORT.csv")
 
-There are 6,510 airports in this dataframe. They are all identified by three-character codes. You probably know the code for your own city and a few other places that you frequent. But not many of us can name more than a dozen or two. We can easily join the Airports and AirDelays dataframes; but as you may have noticed, the "Descriptions" field in the Airports table is really long. We just want the city and state.
+There are 6,510 airports in this dataframe. They are all identified by three-character codes. You probably know the code for your own city and a few other places that you frequent. But not many of us can name more than a dozen or so of them. We can easily join the Airports and AirDelays dataframes; but as you may have noticed, the "Descriptions" field in the Airports table is really long. We just want the city and state.
 
-To get it we'll use the stringr package, part of the tidyverse toolchest. First we'll make a copy of the Airports dataframe, AirportsNew. Then we'll carve out the City field from the Description field using stringr.
+To get it we'll use the stringr package again. First we'll make a copy of the Airports dataframe, AirportsNew. Then we'll carve out the City field from the Description field using stringr's str_extract_all() function.
 
 > AirportsNew <- Airports
 
 > <code>AirportsNew$City <- str_extract_all(string = AirportsNew$Description,
                             pattern = "^(.+)(?=:)")</code>
 
-If you glanced at the Description field, you probably noticed a pattern: the city, followed by a comma, then the state, a colon and the name of the airport. The str_extract() function gets the name of the string and then looks for a pattern using a regular expression, regex for short. If you've never used a regex, the part in quotes above looks like something you might see in an ancient Egyptian tomb, but it's actually used quite a bit in computer science. The first symbol, a caret (^), marks the beginning of a line. The next part, (.+), refers to an unlimited number of characters. The last part, (?=:), tells the function to "look ahead" for a colon; that's the stop sign. Everything it finds before the colon goes into the new variable City.
+If you glanced at the Description field, you probably noticed a pattern: the city, followed by a comma, then the state, a colon and the name of the airport. The str_extract_all() function gets the name of the string and then looks for a pattern using a regular expression, regex for short. If you've never used a regex, the part in quotes above looks like something you might see in an ancient Egyptian tomb, but it's actually used quite a bit in computer science. The first symbol, a caret (^), marks the beginning of a line. The next part, (.+), refers to an unlimited number of characters. The last part, (?=:), tells the function to "look ahead" for a colon; that's the stop sign. Everything it finds before the colon goes into the new variable City.
 
 This looks pretty good. But when we check the structure of AirportsNew, we find something interesting: The City column is a list, a special type of field. We need to convert it to a character string before we can work with it. We'll use sapply(), a Base R function for dealing with lists and vectors; together with its related functions, apply() and lapply(), it was used a lot before the development of the tidyverse a few years ago but still comes in handy.
 
 > AirportsNew$City <- sapply(AirportsNew$City, toString)
 
-We check AirportsNew again with the str() command to confirm that, yes, the City column is a plain-vanilla character field. We're now ready to join it to the AirDelays dataframe.
+We check AirportsNew again with the str() command to confirm that, yes, the City column is a plain-vanilla character field. We're now ready to join AirportsNew to the AirDelays dataframe.
 
 > AirDelays2 <- inner_join(AirportsNew, AirDelays, by=c("Code" = "ORIGIN"))
 
@@ -191,11 +191,11 @@ LateAirports <- AirDelays2 %>%
   
 ![](https://github.com/roncampbell/NICAR2019/blob/images/flights4.png?raw=true)
 
-This opens a lot of possibilities. You probably noticed the column OP_UNIQUE_CARRIER. We have a translation table that will help us figure out which "unique carriers" -- in other words, major airlines -- had the most late flights. But let's try something more challenging: the hour or hours with the most delayed flights. After all, your editor or news director isn't breathing down your neck right this second, so you can take a few minutes to learn new skills!
+This opens a lot of possibilities. You probably noticed the column OP_UNIQUE_CARRIER. We have a translation table that can help us figure out which "unique carriers" -- in other words, major airlines -- had the most late flights. But let's try something more challenging: the hour or hours with the most delayed flights. After all, your editor or news director isn't breathing down your neck right this second, so you can take a few minutes to learn new skills!
 
-There are two columns that list departure times: CRS_DEP_TIME, the departure time according to the official schedule, and DEP_TIME, the actual departure time. Since we're interested in flights that departed late, we'll focus on the official departure time. The first thing to notice is that the CRS_DEP_TIME field is numeric when it should be a time field; we need to fix that. 
+There are two columns that list departure times: CRS_DEP_TIME, the departure time according to the official schedule, and DEP_TIME, the actual departure time. Since we're interested in flights that departed late, we'll focus on the official departure time. Notice that the CRS_DEP_TIME field is numeric when it should be a time field; we need to fix that. 
 
-The first step is to convert it to a character field and then to add a leading zero, something we did earlier in this class.
+The first step is to convert it to a character field and then add a leading zero. We did this earlier in the class with Calfornia demographic data, using the stringr package's str_pad() function. 
 
 > AirDelays2$CRS_DEP_TIME <- as.character(AirDelays2$CRS_DEP_TIME)
 
@@ -231,4 +231,3 @@ Let's graph this to see what it looks like.
 ![](https://github.com/roncampbell/NICAR2019/blob/images/LateFlightsByHour.png?raw=true)
   
 Late flights peak around 5 pm each evening. If you thought your commute home was bad, stay away from the airport!
-
