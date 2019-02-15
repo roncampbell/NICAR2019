@@ -228,7 +228,7 @@ LateHours <- AirDelays2 %>%
 
 Let's graph this to see what it looks like.
 
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/LateFlightsByHour.png?raw=true)
   
 Late flights peak around 5 pm each evening. If you thought your commute home was bad, stay away from the airport!
 
