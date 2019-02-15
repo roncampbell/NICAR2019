@@ -20,8 +20,9 @@ This XML2 command does three things. It tells R to download some HTML; it direct
 
 Next we use the tidyverse read_csv function to do just that, read the comma-separated variable file we just imported.
 
-> <code>CA_popest <- read_csv("ca_popest.csv")
-Parsed with column specification:
+> <code>CA_popest <- read_csv("ca_popest.csv")</code>
+  
+<code>Parsed with column specification:
 cols(
   fips = col_double(),
   county = col_character(),
