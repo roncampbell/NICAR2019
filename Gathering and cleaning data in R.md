@@ -191,14 +191,24 @@ LateAirports <- AirDelays2 %>%
   
 ![](https://github.com/roncampbell/NICAR2019/blob/images/flights4.png?raw=true)
 
+This opens a lot of possibilities. You probably noticed the column OP_UNIQUE_CARRIER. We have a translation table that will help us figure out which "unique carriers" -- in other words, major airlines -- had the most late flights. But let's try something more challenging. After all, your editor or news director isn't breathing down your neck right this second, so you can take a few minutes to learn new skills!
 
+There are two columns that list departure times: CRS_DEP_TIME, the departure time according to the official schedule, and DEP_TIME, the actual departure time. Since we're interested in flights that departed late, we'll focus on the official departure time. The first thing to notice is that the CRS_DEP_TIME field is numeric when it should be a time field; we need to fix that. 
 
-We want to know how bad flight delays are for people in the greater NICAR Conference region, and there are just four airports in NICAR Land: Los Angeles International (LAX), Long Beach Airport (LGB), John Wayne Airport (SNA) and San Diego International (SAN). We can fetch them by filtering for the three-character codes.
+The first step is to convert it to a character field and then to add a leading zero, something we did earlier in this class.
 
-> <code>SoCalAirports <- Airports %>% 
-  +     filter(Code %in% c("LAX", "LGB", "SNA", "SAN"))</code>
+> AirDelays2$CRS_DEP_TIME <- as.character(AirDelays2$CRS_DEP_TIME)
 
-![](https://github.com/roncampbell/NICAR2019/blob/images/SoCalAirports.png?raw=true)
+> AirDelays2$CRS_DEP_TIME <- str_pad(AirDelays2$CRS_DEP_TIME, 4, "left", "0")
+
+Next we'll use lubridate's parse_date_time function to convert CRS_DATE_TIME into hours and minutes:
+
+> AirDelays2$CRS_DEP_TIME <- parse_date_time(AirDelays2$CRS_DEP_TIME, "HM")
+
+We get a funky date and a solid time.
+
+![]()
+
 
 
 
