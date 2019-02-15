@@ -93,8 +93,9 @@ theme_minimal()</code>
 Another way to look at the data is to examine the relationship between the total population and the number of immigrants. We can do that with a scatterplot. This is just what it sounds like: a bunch of dots plotted against two variables on an X-Y axis. You can even add a line to show the trend of the data.
  
  > <code>ggplot(OC_Residents, aes(x=TotalPop, y=Immigrants)) + geom_point() +
-geom_smooth()
-`geom_smooth()` using method = 'loess' and formula 'y ~ x'</code>
+geom_smooth()</code>
+ 
+`geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/OC_Pop_immigrants.png?raw=true)
 
