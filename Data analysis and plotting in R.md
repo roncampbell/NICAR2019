@@ -38,7 +38,7 @@ Here are the first few name changes:
 colnames(OC_Residents)[3] <- "Geography"
 colnames(OC_Residents)[4] <- "TotalPop"</code>                                     
 
-We'll also rename the columns for "Native", "US_PR" (Puerto Rico), "US_BornAbroad", "Naturalized" and "Noncitizen". These are columns 6, 8, 10, 12 and 14; make sure you have the right column indexes when you rename these columns. We can also eliminate some columns if we wish. It's always a good idea to check the column name first, for example  by typing "colnames(OC_Residents)[15]" in the console and hiting enter; this will tell you for sure if you're about to zap the column you really intend to terminate with extreme prejudice. Remember, once you do the NULL trick, a column is gone.
+We'll also rename the columns for "Native", "US_PR" (Puerto Rico), "US_BornAbroad", "Naturalized" and "Noncitizen". These are columns 6, 8, 10, 12 and 14; make sure you have the right column indexes when you rename these columns. We can also eliminate some columns if we wish. It's always a good idea to check the column name first, for example  by typing "colnames(OC_Residents)[15]" in the console and hitting enter; this will tell you for sure if you're about to zap the column you really intend to terminate with extreme prejudice. Remember, once you do the NULL trick, a column is gone.
 
 > OC_Residents[15] <- NULL
 
