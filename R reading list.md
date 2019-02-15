@@ -6,7 +6,7 @@ Dozens of books and hundreds, perhaps thousands of articles discuss R. Here are 
 
 <code>R for Data Science</code> by Hadley Wickham & Garrett Grolemund (O'Reilly, 2017), 481 pages. If you're going to buy, rent or steal just one R book, make it this one.
 
-<code>Practical R for Mass Communications and Journalism</code> by Sharon Machlis (CRC Press, 2019), 223 pages. Written by a journalist (and longtime IRE-NICAR member) for journalists, this book takes a very practical approach - one missing from a lot of R manuals.
+<code>Practical R for Mass Communications and Journalism</code> by Sharon Machlis (CRC Press, 2019), 223 pages. Written by a journalist for journalists, this book by a longtime IRE-NICAR member takes a very practical approach - one missing from a lot of R manuals.
 
 <code>Practical Statistics for Data Scientists</code> by Peter Bruce & Andrew Bruce (O'Reilly, 2017), 284 pages. R was developed as statistical software. This book will help you deal with some of the many stats that R throws at you.
 
