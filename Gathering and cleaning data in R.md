@@ -207,7 +207,7 @@ Next we'll use lubridate's parse_date_time function to convert CRS_DATE_TIME int
 
 We get a funky date and a solid time.
 
-![]()
+![](https://github.com/roncampbell/NICAR2019/blob/images/flights5.png?raw=true)
 
 
 
