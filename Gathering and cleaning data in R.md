@@ -229,6 +229,14 @@ LateHours <- AirDelays2 %>%
 
 Let's graph this to see what it looks like.
 
+> <code>ggplot(LateHours, aes(x=CRS_DepHour, y=LateFlights)) +
+geom_line(col="sienna2") +
+labs(title="Late flights by hour of the day",
+subtitle="October 2018",
+caption="Source: Bureau of Transportation Statistics") +
+xlab("Hour of day") + ylab("Number of flights") +
+theme_minimal()</code>
+
 ![](https://github.com/roncampbell/NICAR2019/blob/images/LateFlightsByHour.png?raw=true)
   
 Late flights peak around 5 pm each evening. If you thought your commute home was bad, stay away from the airport!
