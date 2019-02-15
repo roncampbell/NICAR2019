@@ -209,7 +209,7 @@ We get a funky date and a solid time.
 
 ![](https://github.com/roncampbell/NICAR2019/blob/images/flights5.png?raw=true)
 
-Now we'll apply the lubridate function hour() to CRS_DEP_TIME to make a new field, CRS_DEP_Hour.
+Now we'll apply the lubridate function hour() to CRS_DEP_TIME to make a new field, CRS_Dep_Hour.
 
 > AirDelays2$CRS_Dep_Hour <- hour(AirDelays2$CRS_DEP_TIME)
 
