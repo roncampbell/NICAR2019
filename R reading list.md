@@ -31,3 +31,5 @@ and look around. More than 270,000 answers and counting.
 desk. R nerds need a style guide too. Here it is: [https://google.github.io/styleguide/Rguide.xml](https://google.github.io/styleguide/Rguide.xml)
 
 <code>The tidyverse style guide</code> Yes, there's a style guide for the tidyverse too, written of course by Hadley Wickham [https://style.tidyverse.org/_main.pdf](https://style.tidyverse.org/_main.pdf)
+
+<code>Keyboard Shortcuts</code> This will save your wrists.[https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts)
