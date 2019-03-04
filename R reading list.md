@@ -43,4 +43,4 @@ and look around. More than 270,000 answers and counting.
 
 <code>R Studio webinar</code> [https://resources.rstudio.com/](https://resources.rstudio.com/)
 
-<code>News Nerdery</code>. A great place to share information and ask questions. [Newsnerdery.slack.com](Newsnerdery.slack.com)
+<code>News Nerdery</code>. A great place to share information and ask questions. [https:/newsnerdery.slack.com](https:/newsnerdery.slack.com)
