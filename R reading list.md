@@ -1,6 +1,6 @@
 # R reading list
 
-Dozens of books and hundreds, perhaps thousands of articles discuss R. Here are some of our favorites. We've chosen those that we think will prove useful for journalists, particularly reporters who are just starting to use R in their work.
+Dozens of books and hundreds, perhaps thousands of articles discuss R. Here are some of Ron and Meghan's favorites. We've chosen those that we think will prove useful for journalists, particularly reporters who are just starting to use R in their work.
 
 ## General
 
