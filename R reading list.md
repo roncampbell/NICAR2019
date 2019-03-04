@@ -16,6 +16,8 @@ Dozens of books and hundreds, perhaps thousands of articles discuss R. Here are 
 
 <code>Online Learning</code>R Studio has collected a set of tutorials for learning R, including data science, programming and R Markdown, at [https://www.rstudio.com/online-learning/](https://www.rstudio.com/online-learning/)
 
+<code>What They Forgot to Teach You About R</code> by Jennifer Bryan and Jim Hester. You've got to love an online course whose first chapter begins with the letters "WTF" and says it's intended for "users who want to (re)design their R lifestyle." [https://whattheyforgot.org/](https://whattheyforgot.org/)
+
 ## Graphics and mapping
 
 <code>R Graphics Cookbook</code> by Winston Chang (O'Reilly, 2013), 382 pages. A great introduction to R graphics, including ggplot.
