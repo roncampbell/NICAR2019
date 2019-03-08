@@ -2,7 +2,7 @@
 
 This is the repository for an <code>R</code> class at the <code>NICAR Conference</code> in Newport Beach, CA, March 7-10, 2019. Meghan Hoyer of the Associated Press and I will be teaching a 3-part introduction to R. 
 
-Meghan will teach the first part, Intro to R and R Studio. You'll find her handout here: []().
+Meghan will teach the first part, Intro to R and R Studio. You'll find her handout here: [http://data.ap.org/projects/2018/meghan-nicar-rclass/processed/Intro_to_R_and_RStudio.html](http://data.ap.org/projects/2018/meghan-nicar-rclass/processed/Intro_to_R_and_RStudio.html).
 
 I will teach the next two parts, Data analysis and plotting in R, and Gathering and cleaning data in R. Tip sheets and data for both classes are here as well as a suggested reading list.
 
